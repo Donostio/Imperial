@@ -131,6 +131,11 @@ def fetch_and_process_darwin_data(debug=False):
             print(history.last_sent)
             print("\n--- Last Response ---")
             print(history.last_received)
+            print("\n--- Response Object ---")
+            print(f"Response type: {type(response)}")
+            print(f"Response attributes: {dir(response)}")
+            if hasattr(response, '__dict__'):
+                print(f"Response dict: {response.__dict__}")
             print("----------------------\n")
 
         data = parse_and_map_data(response)
@@ -153,17 +158,8 @@ def main():
             json.dump(data, f, indent=4)
         print(f"Successfully saved REAL data to {OUTPUT_FILE}")
     else:
-        print("No REAL data generated, skipping file save.")
+        print("No REAL data generated (no trains found or outside service hours).")
 
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
-
