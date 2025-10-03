@@ -19,8 +19,8 @@ MINIMUM_INTERCHANGE_MINUTES = 4
 
 # --- ESTIMATED TRAVEL TIMES for Calculation ---
 # Since LDB does not provide intermediate stops, we estimate travel time.
-STR_TO_CLJ_MINUTES = 8  # Estimated time from Streatham Common to Clapham Junction
-CLJ_TO_IMW_MINUTES = 10 # Estimated time for connection leg (Clapham Junc. to Imperial Wharf)
+STR_TO_CLJ_MINUTES = 12  # Estimated time from Streatham Common to Clapham Junction
+CLJ_TO_IMW_MINUTES = 5 # Estimated time for connection leg (Clapham Junc. to Imperial Wharf)
 
 # XML Namespaces used in the LDB API response
 NAMESPACES = {
