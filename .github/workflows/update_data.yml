@@ -1,36 +1,48 @@
-steps:
-  # Step 1: Check out the code
-  - name: Checkout repository
-    uses: actions/checkout@v4
+# Workflow to update the real-time data file every 5 minutes
+name: Update Live Darwin Data
 
-  # Step 2: Set up Python environment
-  - name: Set up Python 3.x
-    uses: actions/setup-python@v5
-    with:
-      python-version: '3.x'
+# The 'on' block defines when the workflow runs
+on:
+  schedule:
+    # Runs at minute 0, 5, 10, 15, ..., 55 of every hour, every day
+    - cron: "*/5 * * * *"
+  # Allows you to manually trigger the workflow from the GitHub UI
+  workflow_dispatch:
 
-  # Step 3: Install dependencies from requirements.txt
-  - name: Install dependencies
-    run: |
-      python -m pip install --upgrade pip
-      pip install -r requirements.txt
-      # The 'requirements.txt' file contains 'requests'
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the code
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-  # Step 4: Run the data harvester script
-  - name: Run data update script
-    run: python update_journey_data.py
-    env:
-      # Securely pass the API key from your GitHub Secrets to the Python script
-      DARWIN_API_KEY: ${{ secrets.DARWIN_API_KEY }}
+      # Step 2: Set up Python environment
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
 
-  # Step 5: Commit the generated live_data.json file back to the repository
-  - name: Commit and push changes
-    uses: stefanzweifel/git-auto-commit-action@v5
-    with:
-      commit_message: "AUTO: Update real-time journey data"
-      # This ensures only the newly generated JSON file is committed
-      files: live_data.json
-      # Use the GITHUB_TOKEN for permission to commit back
-      commit_user_name: GitHub Actions Bot
-      commit_user_email: actions@github.com
+      # Step 3: Install dependencies from requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Run the data harvester script
+      - name: Run data update script
+        run: python update_journey_data.py
+        env:
+          # Securely pass the API key from GitHub Secrets
+          DARWIN_API_KEY: ${{ secrets.DARWIN_API_KEY }}
+
+      # Step 5: Commit the generated live_data.json file back to the repository
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "AUTO: Update real-time journey data"
+          files: live_data.json
+          commit_user_name: GitHub Actions Bot
+          commit_user_email: actions@github.com
+
 
