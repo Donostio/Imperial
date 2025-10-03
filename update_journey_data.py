@@ -115,8 +115,8 @@ def fetch_and_process_darwin_data(debug=False):
         history = HistoryPlugin()
         client = Client(wsdl=WSDL_URL, plugins=[history] if debug else [])
 
-        # Create the header with access token
-        header = client.get_element('ns2:AccessToken')
+        # Create the header with access token using the correct namespace
+        header = client.get_element('{http://thalesgroup.com/RTTI/2013-11-28/Token/types}AccessToken')
         header_value = header(TokenValue=DARWIN_API_KEY)
 
         # Call GetDepartureBoard
