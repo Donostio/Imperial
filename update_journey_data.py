@@ -22,24 +22,21 @@ STR_TO_CLJ_MINUTES = 8
 CLJ_TO_IMW_MINUTES = 10
 
 # --- Namespaces ---
-# Use 2017 schema for SOAPAction (this is what the server expects)
-SOAP_ACTION_NAMESPACE = "http://thalesgroup.com/RTTI/2017-10-01/ldb/"
-# Use 2021 schema for body elements
-LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2021-11-01/ldb/"
+# Use 2016 schema for the ldb11.asmx endpoint
+LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2016-02-16/ldb/"
 TOKEN_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2013-11-28/Token/types"
 
 NAMESPACES = {
-    'soap': 'http://www.w3.org/2003/05/soap-envelope/',
-    'soap11': 'http://schemas.xmlsoap.org/soap/envelope/',
+    'soap': 'http://schemas.xmlsoap.org/soap/envelope/',
     'ldb': LDB_NAMESPACE_URL,
     'typ': TOKEN_NAMESPACE_URL
 }
 
 
 def create_soap_payload(crs_code, token, num_rows=2):
-    """Creates SOAP body for GetDepartureBoard using 2021 schema."""
+    """Creates SOAP 1.1 body for GetDepartureBoard."""
     return f"""<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
                xmlns:ldb="{LDB_NAMESPACE_URL}"
                xmlns:typ="{TOKEN_NAMESPACE_URL}">
     <soap:Header>
@@ -139,15 +136,12 @@ def extract_fault(xml_response):
     """Extract SOAP Fault details if present."""
     try:
         root = ET.fromstring(xml_response)
-        # Check both SOAP 1.1 and SOAP 1.2 fault formats
-        fault = root.find(".//soap11:Fault", namespaces=NAMESPACES)
-        if fault is None:
-            fault = root.find(".//soap:Fault", namespaces=NAMESPACES)
+        fault = root.find(".//soap:Fault", namespaces=NAMESPACES)
         
         if fault is not None:
-            faultcode = fault.findtext("faultcode") or fault.findtext("soap:Code/soap:Value", namespaces=NAMESPACES)
-            faultstring = fault.findtext("faultstring") or fault.findtext("soap:Reason/soap:Text", namespaces=NAMESPACES)
-            detail = fault.findtext("detail") or fault.findtext("soap:Detail", namespaces=NAMESPACES)
+            faultcode = fault.findtext("faultcode")
+            faultstring = fault.findtext("faultstring")
+            detail = fault.findtext("detail")
             return f"SOAP Fault: code={faultcode}, string={faultstring}, detail={detail}"
     except ET.ParseError:
         return "SOAP Fault (unparseable response)"
@@ -166,8 +160,8 @@ def fetch_and_process_darwin_data(debug=False):
 
     headers = {
         'Content-Type': 'text/xml; charset=utf-8',
-        # ✅ Use 2017 schema namespace for SOAPAction (what server expects)
-        'SOAPAction': f'"{SOAP_ACTION_NAMESPACE}GetDepartureBoard"'
+        # ✅ Match the namespace used in the SOAP body
+        'SOAPAction': f'"{LDB_NAMESPACE_URL}GetDepartureBoard"'
     }
 
     try:
