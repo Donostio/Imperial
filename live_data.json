@@ -1,1 +1,64 @@
-
+[
+    {
+        "id": 1,
+        "departureTime": "19:25",
+        "arrivalTime": "19:55",
+        "totalDuration": "30 min",
+        "status": "On Time",
+        "live_updated_at": "21:34:14",
+        "legs": [
+            {
+                "origin": "SRC",
+                "destination": "CLJ",
+                "departure": "19:25",
+                "status": "On Time",
+                "platform": "2",
+                "operator": "Southern"
+            },
+            {
+                "operator": "Change Train",
+                "duration": "5 min",
+                "status": "Connection"
+            },
+            {
+                "origin": "CLJ",
+                "destination": "IMW",
+                "departure": "19:40",
+                "status": "On Time",
+                "platform": "17",
+                "operator": "Southern/Overground"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "departureTime": "19:40",
+        "arrivalTime": "20:15",
+        "totalDuration": "35 min",
+        "status": "Delayed (Expected 19:45)",
+        "live_updated_at": "21:34:14",
+        "legs": [
+            {
+                "origin": "SRC",
+                "destination": "CLJ",
+                "departure": "19:40",
+                "status": "Varies",
+                "platform": "2",
+                "operator": "Southern"
+            },
+            {
+                "operator": "Change Train",
+                "duration": "6 min",
+                "status": "Connection"
+            },
+            {
+                "origin": "CLJ",
+                "destination": "IMW",
+                "departure": "19:56",
+                "status": "Varies",
+                "platform": "17",
+                "operator": "Southern/Overground"
+            }
+        ]
+    }
+]
