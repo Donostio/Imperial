@@ -19,8 +19,8 @@ MINIMUM_INTERCHANGE_MINUTES = 4
 
 # --- ESTIMATED TRAVEL TIMES for Calculation ---
 # Since LDB does not provide intermediate stops, we estimate travel time.
-STR_TO_CLJ_MINUTES = 12  # Estimated time from Streatham Common to Clapham Junction
-CLJ_TO_IMW_MINUTES = 5 # Estimated time for connection leg (Clapham Junc. to Imperial Wharf)
+STR_TO_CLJ_MINUTES = 8  # Estimated time from Streatham Common to Clapham Junction
+CLJ_TO_IMW_MINUTES = 10 # Estimated time for connection leg (Clapham Junc. to Imperial Wharf)
 
 # XML Namespaces used in the LDB API response
 NAMESPACES = {
@@ -163,8 +163,10 @@ def fetch_and_process_darwin_data():
     
     # 2. Define Headers
     headers = {
-        'Content-Type': 'application/soap+xml; charset=utf-8',
-        'SOAPAction': 'http://thalesgroup.com/RTTI/2012-01-13/ldb/GetDepartureBoard'
+        # CRITICAL FIX: Changing Content-Type to text/xml for better LDB Lite compatibility
+        'Content-Type': 'text/xml; charset=utf-8', 
+        # CRITICAL FIX: Changing SOAPAction to match the 2017 namespace in the payload
+        'SOAPAction': 'http://thalesgroup.com/RTTI/2017-10-01/ldb/GetDepartureBoard'
     }
 
     try:
@@ -201,5 +203,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
