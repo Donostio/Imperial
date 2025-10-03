@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 DARWIN_API_KEY = os.getenv("DARWIN_API_KEY")
 OUTPUT_FILE = "live_data.json"
 
-# ✅ Correct endpoint for 2021-11-01 schema
+# ✅ Correct endpoint for LDB API
 LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb11.asmx"
 
 # --- JOURNEY DETAILS ---
@@ -22,11 +22,15 @@ STR_TO_CLJ_MINUTES = 8
 CLJ_TO_IMW_MINUTES = 10
 
 # --- Namespaces ---
+# Use 2017 schema for SOAPAction (this is what the server expects)
+SOAP_ACTION_NAMESPACE = "http://thalesgroup.com/RTTI/2017-10-01/ldb/"
+# Use 2021 schema for body elements
 LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2021-11-01/ldb/"
 TOKEN_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2013-11-28/Token/types"
 
 NAMESPACES = {
     'soap': 'http://www.w3.org/2003/05/soap-envelope/',
+    'soap11': 'http://schemas.xmlsoap.org/soap/envelope/',
     'ldb': LDB_NAMESPACE_URL,
     'typ': TOKEN_NAMESPACE_URL
 }
@@ -135,11 +139,15 @@ def extract_fault(xml_response):
     """Extract SOAP Fault details if present."""
     try:
         root = ET.fromstring(xml_response)
-        fault = root.find(".//soap:Fault", namespaces={'soap': 'http://schemas.xmlsoap.org/soap/envelope/'})
+        # Check both SOAP 1.1 and SOAP 1.2 fault formats
+        fault = root.find(".//soap11:Fault", namespaces=NAMESPACES)
+        if fault is None:
+            fault = root.find(".//soap:Fault", namespaces=NAMESPACES)
+        
         if fault is not None:
-            faultcode = fault.findtext("faultcode")
-            faultstring = fault.findtext("faultstring")
-            detail = fault.findtext("detail")
+            faultcode = fault.findtext("faultcode") or fault.findtext("soap:Code/soap:Value", namespaces=NAMESPACES)
+            faultstring = fault.findtext("faultstring") or fault.findtext("soap:Reason/soap:Text", namespaces=NAMESPACES)
+            detail = fault.findtext("detail") or fault.findtext("soap:Detail", namespaces=NAMESPACES)
             return f"SOAP Fault: code={faultcode}, string={faultstring}, detail={detail}"
     except ET.ParseError:
         return "SOAP Fault (unparseable response)"
@@ -152,14 +160,14 @@ def fetch_and_process_darwin_data(debug=False):
         print("ERROR: DARWIN_API_KEY environment variable is missing.")
         return []
 
-    print(f"[{datetime.now().isoformat()}] Fetching REAL LDB data for {ORIGIN_CRS} using 2021 schema...")
+    print(f"[{datetime.now().isoformat()}] Fetching REAL LDB data for {ORIGIN_CRS}...")
 
     soap_request = create_soap_payload(ORIGIN_CRS, DARWIN_API_KEY, num_rows=2)
 
     headers = {
         'Content-Type': 'text/xml; charset=utf-8',
-        # ✅ SOAPAction must be quoted for SOAP 1.1
-        'SOAPAction': f"\"{LDB_NAMESPACE_URL}GetDepartureBoard\""
+        # ✅ Use 2017 schema namespace for SOAPAction (what server expects)
+        'SOAPAction': f'"{SOAP_ACTION_NAMESPACE}GetDepartureBoard"'
     }
 
     try:
