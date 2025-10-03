@@ -4,34 +4,41 @@ from datetime import datetime
 import time
 
 # --- 1. Credentials (Read from GitHub Secrets via Environment Variables) ---
-DARWIN_USERNAME = os.getenv("DARWIN_USERNAME")
-DARWIN_PASSWORD = os.getenv("DARWIN_PASSWORD")
+DARWIN_API_KEY = os.getenv("DARWIN_API_KEY")
 OUTPUT_FILE = "live_data.json"
+# Note: We are using the single DARWIN_API_KEY (the OpenLDBWS Token)
+# for the polling strategy, instead of a separate username/password pair.
 
 def fetch_and_process_darwin_data():
     """
-    Connects to the Darwin API using secure credentials and generates 
-    a simplified journey list structure.
+    Simulates connecting to the Darwin LDB API using the secure token
+     and generates a simplified journey list structure.
     
-    In a real-world scenario, you would use a library (like requests 
-    or a STOMP client) to authenticate and consume the Darwin feed here.
+    In a real-world scenario, you would use the 'requests' library to call 
+    the LDB Web Service endpoint (e.g., SOAP/XML request) and use the API key
+    for authentication.
     """
     
-    if not all([DARWIN_USERNAME, DARWIN_PASSWORD]):
-        # This prevents the script from running and exposing dummy data if secrets are missing
-        print("ERROR: DARWIN_USERNAME or DARWIN_PASSWORD environment variables are missing.")
+    if not DARWIN_API_KEY:
+        # Check for the single API key now, which is what the GitHub Action provides.
+        print("ERROR: DARWIN_API_KEY environment variable is missing.")
         return []
 
-    print(f"[{datetime.now().isoformat()}] Securely fetching data for SRC-IMW...")
+    # In a real app, this would be an HTTP request to the LDB endpoint:
+    # headers = {'Content-Type': 'application/soap+xml'}
+    # response = requests.post(LDB_URL, data=SOAP_PAYLOAD, headers=headers)
+    
+    print(f"[{datetime.now().isoformat()}] Securely simulating LDB data fetch using token...")
     
     # --- SIMULATION of Darwin API call ---
-    # We will simulate the real-time update logic by adding a "live" timestamp 
+    # We simulate the real-time update logic by adding a "live" timestamp 
     # and randomly changing the status of the second train.
     
     current_time_str = datetime.now().strftime("%H:%M:%S")
     
     # Randomize the status for simulation
     statuses = ["On Time", "Delayed (Expected 20:05)", "Cancelled", "Delayed (Expected 19:45)"]
+    # Generates a pseudo-random index based on the 5-minute interval
     current_status_index = int(time.time() // (5 * 60)) % len(statuses)
     
     mock_journey_data = [
@@ -79,3 +86,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
