@@ -41,7 +41,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "AUTO: Update real-time journey data"
-          files: live_data.json
+          # OLD (Causes Warning):
+          # files: live_data.json
+          # NEW (Correct):
+          file_pattern: live_data.json
           commit_user_name: GitHub Actions Bot
           commit_user_email: actions@github.com
 
