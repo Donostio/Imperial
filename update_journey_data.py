@@ -135,7 +135,7 @@ def extract_fault(xml_response):
     """Extract SOAP Fault details if present."""
     try:
         root = ET.fromstring(xml_response)
-        fault = root.find(".//soap:Fault", namespaces=NAMESPACES)
+        fault = root.find(".//soap:Fault", namespaces={'soap': 'http://schemas.xmlsoap.org/soap/envelope/'})
         if fault is not None:
             faultcode = fault.findtext("faultcode")
             faultstring = fault.findtext("faultstring")
@@ -158,7 +158,8 @@ def fetch_and_process_darwin_data(debug=False):
 
     headers = {
         'Content-Type': 'text/xml; charset=utf-8',
-        'SOAPAction': f'{LDB_NAMESPACE_URL}GetDepartureBoard'
+        # ✅ SOAPAction must be quoted for SOAP 1.1
+        'SOAPAction': f"\"{LDB_NAMESPACE_URL}GetDepartureBoard\""
     }
 
     try:
@@ -168,12 +169,6 @@ def fetch_and_process_darwin_data(debug=False):
             headers=headers,
             timeout=10
         )
-        # Do not raise immediately; inspect body for SOAP faults
-        if response.status_code >= 400:
-            print(f"ERROR: HTTP {response.status_code} from API")
-            if debug:
-                print(response.text[:1000])
-            return []
 
         if debug:
             print("\n--- SOAP Request ---")
@@ -182,12 +177,12 @@ def fetch_and_process_darwin_data(debug=False):
             print(response.text[:1000] + ("..." if len(response.text) > 1000 else ""))
             print("----------------------\n")
 
-        # Check for SOAP Faults
         fault_msg = extract_fault(response.text)
         if fault_msg:
             print(f"ERROR: {fault_msg}")
             return []
 
+        response.raise_for_status()
         data = parse_and_map_data(response.text)
         print(f"Successfully fetched and generated {len(data)} REAL journey updates.")
         return data
@@ -210,6 +205,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
