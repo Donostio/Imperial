@@ -25,15 +25,17 @@ CLJ_TO_IMW_MINUTES = 10 # Estimated time for connection leg (Clapham Junc. to Im
 # XML Namespaces used in the LDB API response
 NAMESPACES = {
     'soap': 'http://www.w3.org/2003/05/soap-envelope/',
-    'ldb': 'http://thalesgroup.com/RTTI/2017-10-01/ldb/',
+    # CRITICAL FIX: Reverting to the LDB 2012 namespace for LDB Lite compatibility
+    'ldb': 'http://thalesgroup.com/RTTI/2012-01-13/ldb/',
     'td': 'http://thalesgroup.com/RTTI/2013-11-28/Token/types'
 }
 
 def create_soap_payload(crs_code, token, num_rows=2):
     """Creates the XML body for the GetDepartureBoardRequest."""
     
+    # CRITICAL FIX: Using the LDB 2012 namespace in the XML payload
     return f"""<?xml version="1.0"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ldb="http://thalesgroup.com/RTTI/2017-10-01/ldb/" xmlns:td="http://thalesgroup.com/RTTI/2013-11-28/Token/types">
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:ldb="http://thalesgroup.com/RTTI/2012-01-13/ldb/" xmlns:td="http://thalesgroup.com/RTTI/2013-11-28/Token/types">
     <soap:Header>
         <td:AccessToken>
             <td:TokenValue>{token}</td:TokenValue>
@@ -55,13 +57,14 @@ def parse_and_map_data(xml_response):
     
     root = ET.fromstring(xml_response)
     
-    # Navigate through the SOAP/LDB structure to find the actual train services
+    # CRITICAL FIX: Updated XPath to match the LDB 2012 namespace path
     services_path = ".//ldb:GetDepartureBoardResponse/ldb:GetStationBoardResult/ldb:trainServices/ldb:service"
     services = root.findall(services_path, namespaces=NAMESPACES)
     
     mapped_services = []
     
     for i, service in enumerate(services[:2]): # Process only the first two services
+        # Note: LDB 2012 API uses 'std' and 'etd' regardless of namespace
         std_str = service.findtext('ldb:std', namespaces=NAMESPACES) # Scheduled Time of Departure (e.g., "20:01")
         etd_str = service.findtext('ldb:etd', namespaces=NAMESPACES) # Estimated Time of Departure (e.g., "On time" or "20:05")
         final_destination_name = service.findtext('ldb:destination/ldb:location/ldb:locationName', namespaces=NAMESPACES)
@@ -163,10 +166,9 @@ def fetch_and_process_darwin_data():
     
     # 2. Define Headers
     headers = {
-        # CRITICAL FIX: Changing Content-Type to text/xml for better LDB Lite compatibility
         'Content-Type': 'text/xml; charset=utf-8', 
-        # CRITICAL FIX: Changing SOAPAction to match the 2017 namespace in the payload
-        'SOAPAction': 'http://thalesgroup.com/RTTI/2017-10-01/ldb/GetDepartureBoard'
+        # CRITICAL FIX: Updating SOAPAction to match the LDB 2012 namespace
+        'SOAPAction': 'http://thalesgroup.com/RTTI/2012-01-13/ldb/GetDepartureBoard' 
     }
 
     try:
@@ -203,6 +205,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
