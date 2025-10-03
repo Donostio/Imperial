@@ -8,16 +8,8 @@ from datetime import datetime, timedelta
 DARWIN_API_KEY = os.getenv("DARWIN_API_KEY")
 OUTPUT_FILE = "live_data.json"
 
-# ✅ Correct 2021 endpoint + namespace
+# ✅ Correct endpoint for 2021-11-01 schema
 LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb11.asmx"
-LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2021-11-01/ldb/"
-TOKEN_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2013-11-28/Token/types"
-
-NAMESPACES = {
-    'soap': 'http://www.w3.org/2003/05/soap-envelope/',
-    'ldb': LDB_NAMESPACE_URL,
-    'typ': TOKEN_NAMESPACE_URL
-}
 
 # --- JOURNEY DETAILS ---
 ORIGIN_CRS = "STR"  # Streatham Common
@@ -29,9 +21,19 @@ MINIMUM_INTERCHANGE_MINUTES = 4
 STR_TO_CLJ_MINUTES = 8
 CLJ_TO_IMW_MINUTES = 10
 
+# --- Namespaces ---
+LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2021-11-01/ldb/"
+TOKEN_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2013-11-28/Token/types"
+
+NAMESPACES = {
+    'soap': 'http://www.w3.org/2003/05/soap-envelope/',
+    'ldb': LDB_NAMESPACE_URL,
+    'typ': TOKEN_NAMESPACE_URL
+}
+
 
 def create_soap_payload(crs_code, token, num_rows=2):
-    """Creates SOAP body for GetDepartureBoardRequest."""
+    """Creates SOAP body for GetDepartureBoard using 2021 schema."""
     return f"""<?xml version="1.0" encoding="utf-8"?>
 <soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
                xmlns:ldb="{LDB_NAMESPACE_URL}"
@@ -42,29 +44,28 @@ def create_soap_payload(crs_code, token, num_rows=2):
         </typ:AccessToken>
     </soap:Header>
     <soap:Body>
-        <ldb:GetDepartureBoardRequest>
+        <ldb:GetDepartureBoard>
             <ldb:numRows>{num_rows}</ldb:numRows>
             <ldb:crs>{crs_code}</ldb:crs>
-        </ldb:GetDepartureBoardRequest>
+        </ldb:GetDepartureBoard>
     </soap:Body>
 </soap:Envelope>"""
 
 
 def parse_and_map_data(xml_response):
-    """Parse XML response and build journey legs."""
+    """Parses the LDB XML response and constructs the two-leg journey."""
     root = ET.fromstring(xml_response)
     services_path = ".//ldb:GetDepartureBoardResponse/ldb:GetStationBoardResult/ldb:trainServices/ldb:service"
     services = root.findall(services_path, namespaces=NAMESPACES)
 
     mapped_services = []
-
     for i, service in enumerate(services[:2]):
         std_str = service.findtext('ldb:std', namespaces=NAMESPACES)
         etd_str = service.findtext('ldb:etd', namespaces=NAMESPACES)
         platform = service.findtext('ldb:platform', namespaces=NAMESPACES)
         operator = service.findtext('ldb:operator', namespaces=NAMESPACES)
 
-        # --- Status handling ---
+        # --- Status logic ---
         if etd_str == "On time" or etd_str is None or etd_str == std_str:
             status = "On Time"
             actual_departure_str = std_str
@@ -87,6 +88,7 @@ def parse_and_map_data(xml_response):
         except ValueError:
             continue
 
+        # Connection timings
         clj_arrival_dt = departure_dt + timedelta(minutes=STR_TO_CLJ_MINUTES)
         required_clj_departure_dt = clj_arrival_dt + timedelta(minutes=MINIMUM_INTERCHANGE_MINUTES)
         imw_departure_dt = required_clj_departure_dt
@@ -129,8 +131,23 @@ def parse_and_map_data(xml_response):
     return mapped_services
 
 
-def fetch_and_process_darwin_data(debug=True):
-    """Fetch data from Darwin API."""
+def extract_fault(xml_response):
+    """Extract SOAP Fault details if present."""
+    try:
+        root = ET.fromstring(xml_response)
+        fault = root.find(".//soap:Fault", namespaces=NAMESPACES)
+        if fault is not None:
+            faultcode = fault.findtext("faultcode")
+            faultstring = fault.findtext("faultstring")
+            detail = fault.findtext("detail")
+            return f"SOAP Fault: code={faultcode}, string={faultstring}, detail={detail}"
+    except ET.ParseError:
+        return "SOAP Fault (unparseable response)"
+    return None
+
+
+def fetch_and_process_darwin_data(debug=False):
+    """Fetches data from Darwin LDB API."""
     if not DARWIN_API_KEY:
         print("ERROR: DARWIN_API_KEY environment variable is missing.")
         return []
@@ -151,18 +168,24 @@ def fetch_and_process_darwin_data(debug=True):
             headers=headers,
             timeout=10
         )
-        response.raise_for_status()
+        # Do not raise immediately; inspect body for SOAP faults
+        if response.status_code >= 400:
+            print(f"ERROR: HTTP {response.status_code} from API")
+            if debug:
+                print(response.text[:1000])
+            return []
 
-        # 🔍 Debug logs
         if debug:
             print("\n--- SOAP Request ---")
             print(soap_request)
-            print("\n--- SOAP Response (raw, first 1000 chars) ---")
+            print("\n--- SOAP Response (raw) ---")
             print(response.text[:1000] + ("..." if len(response.text) > 1000 else ""))
             print("----------------------\n")
 
-        if "soap:Fault" in response.text:
-            print("ERROR: LDB API returned a SOAP Fault (invalid token or request).")
+        # Check for SOAP Faults
+        fault_msg = extract_fault(response.text)
+        if fault_msg:
+            print(f"ERROR: {fault_msg}")
             return []
 
         data = parse_and_map_data(response.text)
@@ -175,7 +198,6 @@ def fetch_and_process_darwin_data(debug=True):
 
 
 def main():
-    """Main entry."""
     data = fetch_and_process_darwin_data(debug=True)
 
     if data:
@@ -188,6 +210,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
