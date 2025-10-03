@@ -5,48 +5,53 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 
 # --- 1. Credentials and Configuration ---
+# API Key is passed via GitHub Secrets (DARWIN_API_KEY)
 DARWIN_API_KEY = os.getenv("DARWIN_API_KEY")
 OUTPUT_FILE = "live_data.json"
-
-# ✅ Correct Darwin LDB endpoint
-LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb11.asmx"
+# Generic and stable LDB endpoint
+LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb.asmx"
 
 # --- JOURNEY DETAILS ---
-ORIGIN_CRS = "STR"   # Streatham Common
-INTERCHANGE_CRS = "CLJ"  # Clapham Junction
-DESTINATION_CRS = "IMW"  # Imperial Wharf
+ORIGIN_CRS = "STR" # Streatham Common
+INTERCHANGE_CRS = "CLJ" # Clapham Junction
+DESTINATION_CRS = "IMW" # Imperial Wharf (Targeted destination, not primary query)
 MINIMUM_INTERCHANGE_MINUTES = 4
 
-# --- ESTIMATED TRAVEL TIMES ---
-STR_TO_CLJ_MINUTES = 8
-CLJ_TO_IMW_MINUTES = 10
+# --- ESTIMATED TRAVEL TIMES for Calculation ---
+STR_TO_CLJ_MINUTES = 8  # Estimated time from Streatham Common to Clapham Junction
+CLJ_TO_IMW_MINUTES = 10 # Estimated time for connection leg (Clapham Junc. to Imperial Wharf)
 
-# ✅ Correct namespaces for Darwin LDBWS (2015 schema)
+# CRITICAL FIX: Using the LDB 2021-11-01 namespace as per documentation
+LDB_NAMESPACE_URL = 'http://thalesgroup.com/RTTI/2021-11-01/ldb/'
+# Token namespace remains consistent
+TOKEN_NAMESPACE_URL = 'http://thalesgroup.com/RTTI/2013-11-28/Token/types'
+
 NAMESPACES = {
     'soap': 'http://www.w3.org/2003/05/soap-envelope/',
-    'ldb': 'http://thalesgroup.com/RTTI/2015-05-14/ldb/',
-    'typ': 'http://thalesgroup.com/RTTI/2013-11-28/Token/types'
+    'ldb': LDB_NAMESPACE_URL,
+    'typ': TOKEN_NAMESPACE_URL
 }
 
 
 def create_soap_payload(crs_code, token, num_rows=2):
-    """Creates the XML body for the GetDepartureBoardRequest."""
-
+    """Creates the XML body for the GetDepartureBoardRequest using the latest schema."""
+    
+    # Using the 2021-11-01 LDB namespace in the XML payload
     return f"""<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope/"
-               xmlns:ldb="http://thalesgroup.com/RTTI/2015-05-14/ldb/"
-               xmlns:typ="http://thalesgroup.com/RTTI/2013-11-28/Token/types">
-  <soap:Header>
-    <typ:AccessToken>
-      <typ:TokenValue>{token}</typ:TokenValue>
-    </typ:AccessToken>
-  </soap:Header>
-  <soap:Body>
-    <ldb:GetDepartureBoardRequest>
-      <ldb:numRows>{num_rows}</ldb:numRows>
-      <ldb:crs>{crs_code}</ldb:crs>
-    </ldb:GetDepartureBoardRequest>
-  </soap:Body>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:ldb="{LDB_NAMESPACE_URL}"
+               xmlns:typ="{TOKEN_NAMESPACE_URL}">
+    <soap:Header>
+        <typ:AccessToken>
+            <typ:TokenValue>{token}</typ:TokenValue>
+        </typ:AccessToken>
+    </soap:Header>
+    <soap:Body>
+        <ldb:GetDepartureBoardRequest>
+            <ldb:numRows>{num_rows}</ldb:numRows>
+            <ldb:crs>{crs_code}</ldb:crs>
+        </ldb:GetDepartureBoardRequest>
+    </soap:Body>
 </soap:Envelope>"""
 
 
@@ -55,12 +60,14 @@ def parse_and_map_data(xml_response):
 
     root = ET.fromstring(xml_response)
 
+    # Note: XPath structure remains mostly consistent across LDB versions
     services_path = ".//ldb:GetDepartureBoardResponse/ldb:GetStationBoardResult/ldb:trainServices/ldb:service"
     services = root.findall(services_path, namespaces=NAMESPACES)
 
     mapped_services = []
 
     for i, service in enumerate(services[:2]):
+        # The fields 'std', 'etd', 'platform', 'operator' are consistent across versions
         std_str = service.findtext('ldb:std', namespaces=NAMESPACES)
         etd_str = service.findtext('ldb:etd', namespaces=NAMESPACES)
         platform = service.findtext('ldb:platform', namespaces=NAMESPACES)
@@ -90,6 +97,7 @@ def parse_and_map_data(xml_response):
         except ValueError:
             continue
 
+        # --- Connection Calculation (Estimating CLJ arrival/departure) ---
         clj_arrival_dt = departure_dt + timedelta(minutes=STR_TO_CLJ_MINUTES)
         required_clj_departure_dt = clj_arrival_dt + timedelta(minutes=MINIMUM_INTERCHANGE_MINUTES)
         imw_departure_dt = required_clj_departure_dt
@@ -139,13 +147,14 @@ def fetch_and_process_darwin_data(debug=False):
         print("ERROR: DARWIN_API_KEY environment variable is missing.")
         return []
 
-    print(f"[{datetime.now().isoformat()}] Fetching REAL LDB data for {ORIGIN_CRS}...")
+    print(f"[{datetime.now().isoformat()}] Fetching REAL LDB data for {ORIGIN_CRS} using 2021 schema...")
 
     soap_request = create_soap_payload(ORIGIN_CRS, DARWIN_API_KEY, num_rows=2)
 
     headers = {
         'Content-Type': 'text/xml; charset=utf-8',
-        'SOAPAction': 'http://thalesgroup.com/RTTI/2015-05-14/ldb/GetDepartureBoard'
+        # CRITICAL FIX: Updating SOAPAction to match the LDB 2021-11-01 namespace
+        'SOAPAction': f'{LDB_NAMESPACE_URL}GetDepartureBoard'
     }
 
     try:
@@ -167,6 +176,7 @@ def fetch_and_process_darwin_data(debug=False):
 
         if "soap:Fault" in response.text:
             print("ERROR: LDB API returned a SOAP Fault (invalid token or request).")
+            # If debug is enabled, the full response will show the fault detail
             return []
 
         data = parse_and_map_data(response.text)
@@ -192,6 +202,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
