@@ -8,8 +8,8 @@ from datetime import datetime, timedelta
 DARWIN_API_KEY = os.getenv("DARWIN_API_KEY")
 OUTPUT_FILE = "live_data.json"
 
-# ✅ Correct endpoint for LDB API
-LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb11.asmx"
+# ✅ Use ldb12.asmx for 2021 schema
+LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb12.asmx"
 
 # --- JOURNEY DETAILS ---
 ORIGIN_CRS = "STR"  # Streatham Common
@@ -22,8 +22,8 @@ STR_TO_CLJ_MINUTES = 8
 CLJ_TO_IMW_MINUTES = 10
 
 # --- Namespaces ---
-# Use 2016 schema for the ldb11.asmx endpoint
-LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2016-02-16/ldb/"
+# Use 2021 schema for the ldb12.asmx endpoint
+LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2021-11-01/ldb/"
 TOKEN_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2013-11-28/Token/types"
 
 NAMESPACES = {
@@ -160,7 +160,7 @@ def fetch_and_process_darwin_data(debug=False):
 
     headers = {
         'Content-Type': 'text/xml; charset=utf-8',
-        # ✅ Match the namespace used in the SOAP body
+        # SOAPAction with quotes for 2021 schema
         'SOAPAction': f'"{LDB_NAMESPACE_URL}GetDepartureBoard"'
     }
 
