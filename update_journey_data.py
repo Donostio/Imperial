@@ -12,7 +12,7 @@ OUTPUT_FILE = "live_data.json"
 WSDL_URL = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/wsdl.aspx?ver=2021-11-01"
 
 # --- JOURNEY DETAILS ---
-ORIGIN_CRS = "STR"  # Streatham Common
+ORIGIN_CRS = "SRC"  # Streatham Common
 INTERCHANGE_CRS = "CLJ"  # Clapham Junction
 DESTINATION_CRS = "IMW"  # Imperial Wharf
 MINIMUM_INTERCHANGE_MINUTES = 4
