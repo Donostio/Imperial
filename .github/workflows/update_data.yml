@@ -1,3 +1,4 @@
+steps:
   # Step 1: Check out the code
   - name: Checkout repository
     uses: actions/checkout@v4
@@ -32,3 +33,4 @@
       # Use the GITHUB_TOKEN for permission to commit back
       commit_user_name: GitHub Actions Bot
       commit_user_email: actions@github.com
+
