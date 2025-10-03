@@ -1,0 +1,29 @@
+ # 1. Checkout the repository code
+  - name: Checkout code
+    uses: actions/checkout@v4
+    
+  # 2. Setup Python environment
+  - name: Set up Python
+    uses: actions/setup-python@v5
+    with:
+      python-version: '3.x'
+
+  # 3. Install dependencies (from your requirements.txt)
+  - name: Install dependencies
+    run: pip install -r requirements.txt
+    
+  # 4. Set environment variables using GitHub Secrets
+  # These are the secrets you must define in your repository settings
+  - name: Run data harvester script
+    env:
+      DARWIN_USERNAME: ${{ secrets.DARWIN_USERNAME }}
+      DARWIN_PASSWORD: ${{ secrets.DARWIN_PASSWORD }}
+    run: python update_journey_data.py
+
+  # 5. Commit the generated JSON file back to the repository
+  - name: Commit and push changes
+    uses: stefanzweifel/git-auto-commit-action@v5
+    with:
+      commit_message: "Data Harvester: Update live_data.json"
+      # Only commit the generated file
+      files: live_data.json
