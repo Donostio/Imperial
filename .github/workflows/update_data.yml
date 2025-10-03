@@ -1,4 +1,3 @@
-steps:
   # Step 1: Check out the code
   - name: Checkout repository
     uses: actions/checkout@v4
