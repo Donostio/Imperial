@@ -1,15 +1,15 @@
 import os
 import json
-import requests
-import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
+from zeep import Client
+from zeep.plugins import HistoryPlugin
 
 # --- 1. Credentials and Configuration ---
 DARWIN_API_KEY = os.getenv("DARWIN_API_KEY")
 OUTPUT_FILE = "live_data.json"
 
-# ✅ Use ldb12.asmx for 2021 schema
-LDB_API_ENDPOINT = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/ldb12.asmx"
+# ✅ Use the 2021-11-01 WSDL
+WSDL_URL = "https://lite.realtime.nationalrail.co.uk/OpenLDBWS/wsdl.aspx?ver=2021-11-01"
 
 # --- JOURNEY DETAILS ---
 ORIGIN_CRS = "STR"  # Streatham Common
@@ -21,53 +21,23 @@ MINIMUM_INTERCHANGE_MINUTES = 4
 STR_TO_CLJ_MINUTES = 8
 CLJ_TO_IMW_MINUTES = 10
 
-# --- Namespaces ---
-# Use 2021 schema for the ldb12.asmx endpoint
-LDB_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2021-11-01/ldb/"
-TOKEN_NAMESPACE_URL = "http://thalesgroup.com/RTTI/2013-11-28/Token/types"
 
-NAMESPACES = {
-    'soap': 'http://schemas.xmlsoap.org/soap/envelope/',
-    'ldb': LDB_NAMESPACE_URL,
-    'typ': TOKEN_NAMESPACE_URL
-}
+def parse_and_map_data(station_board):
+    """Parses the LDB response and constructs the two-leg journey."""
+    if not hasattr(station_board, 'trainServices') or station_board.trainServices is None:
+        return []
 
-
-def create_soap_payload(crs_code, token, num_rows=2):
-    """Creates SOAP 1.1 body for GetDepartureBoard."""
-    return f"""<?xml version="1.0" encoding="utf-8"?>
-<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"
-               xmlns:ldb="{LDB_NAMESPACE_URL}"
-               xmlns:typ="{TOKEN_NAMESPACE_URL}">
-    <soap:Header>
-        <typ:AccessToken>
-            <typ:TokenValue>{token}</typ:TokenValue>
-        </typ:AccessToken>
-    </soap:Header>
-    <soap:Body>
-        <ldb:GetDepartureBoard>
-            <ldb:numRows>{num_rows}</ldb:numRows>
-            <ldb:crs>{crs_code}</ldb:crs>
-        </ldb:GetDepartureBoard>
-    </soap:Body>
-</soap:Envelope>"""
-
-
-def parse_and_map_data(xml_response):
-    """Parses the LDB XML response and constructs the two-leg journey."""
-    root = ET.fromstring(xml_response)
-    services_path = ".//ldb:GetDepartureBoardResponse/ldb:GetStationBoardResult/ldb:trainServices/ldb:service"
-    services = root.findall(services_path, namespaces=NAMESPACES)
-
+    services = station_board.trainServices.service[:2]  # Get first 2 services
     mapped_services = []
-    for i, service in enumerate(services[:2]):
-        std_str = service.findtext('ldb:std', namespaces=NAMESPACES)
-        etd_str = service.findtext('ldb:etd', namespaces=NAMESPACES)
-        platform = service.findtext('ldb:platform', namespaces=NAMESPACES)
-        operator = service.findtext('ldb:operator', namespaces=NAMESPACES)
+
+    for i, service in enumerate(services):
+        std_str = service.std
+        etd_str = service.etd
+        platform = getattr(service, 'platform', None)
+        operator = getattr(service, 'operator', None)
 
         # --- Status logic ---
-        if etd_str == "On time" or etd_str is None or etd_str == std_str:
+        if etd_str == "On time" or etd_str == std_str:
             status = "On Time"
             actual_departure_str = std_str
         elif etd_str == "Cancelled":
@@ -86,7 +56,7 @@ def parse_and_map_data(xml_response):
             ).replace(year=datetime.now().year,
                       month=datetime.now().month,
                       day=datetime.now().day)
-        except ValueError:
+        except (ValueError, TypeError):
             continue
 
         # Connection timings
@@ -132,65 +102,46 @@ def parse_and_map_data(xml_response):
     return mapped_services
 
 
-def extract_fault(xml_response):
-    """Extract SOAP Fault details if present."""
-    try:
-        root = ET.fromstring(xml_response)
-        fault = root.find(".//soap:Fault", namespaces=NAMESPACES)
-        
-        if fault is not None:
-            faultcode = fault.findtext("faultcode")
-            faultstring = fault.findtext("faultstring")
-            detail = fault.findtext("detail")
-            return f"SOAP Fault: code={faultcode}, string={faultstring}, detail={detail}"
-    except ET.ParseError:
-        return "SOAP Fault (unparseable response)"
-    return None
-
-
 def fetch_and_process_darwin_data(debug=False):
-    """Fetches data from Darwin LDB API."""
+    """Fetches data from Darwin LDB API using Zeep."""
     if not DARWIN_API_KEY:
         print("ERROR: DARWIN_API_KEY environment variable is missing.")
         return []
 
     print(f"[{datetime.now().isoformat()}] Fetching REAL LDB data for {ORIGIN_CRS}...")
 
-    soap_request = create_soap_payload(ORIGIN_CRS, DARWIN_API_KEY, num_rows=2)
-
-    headers = {
-        'Content-Type': 'text/xml; charset=utf-8',
-        # SOAPAction with quotes for 2021 schema
-        'SOAPAction': f'"{LDB_NAMESPACE_URL}GetDepartureBoard"'
-    }
-
     try:
-        response = requests.post(
-            LDB_API_ENDPOINT,
-            data=soap_request.encode('utf-8'),
-            headers=headers,
-            timeout=10
+        # Create Zeep client with history plugin for debugging
+        history = HistoryPlugin()
+        client = Client(wsdl=WSDL_URL, plugins=[history] if debug else [])
+
+        # Create the header with access token
+        header = client.get_element('ns2:AccessToken')
+        header_value = header(TokenValue=DARWIN_API_KEY)
+
+        # Call GetDepartureBoard
+        response = client.service.GetDepartureBoard(
+            numRows=2,
+            crs=ORIGIN_CRS,
+            _soapheaders=[header_value]
         )
 
         if debug:
-            print("\n--- SOAP Request ---")
-            print(soap_request)
-            print("\n--- SOAP Response (raw) ---")
-            print(response.text[:1000] + ("..." if len(response.text) > 1000 else ""))
+            print("\n--- Last Request ---")
+            print(history.last_sent)
+            print("\n--- Last Response ---")
+            print(history.last_received)
             print("----------------------\n")
 
-        fault_msg = extract_fault(response.text)
-        if fault_msg:
-            print(f"ERROR: {fault_msg}")
-            return []
-
-        response.raise_for_status()
-        data = parse_and_map_data(response.text)
+        data = parse_and_map_data(response)
         print(f"Successfully fetched and generated {len(data)} REAL journey updates.")
         return data
 
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         print(f"ERROR: Failed to connect to LDB API: {e}")
+        if debug:
+            import traceback
+            traceback.print_exc()
         return []
 
 
