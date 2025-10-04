@@ -8,19 +8,12 @@ TFL_APP_ID = os.getenv("TFL_APP_ID", "")
 TFL_APP_KEY = os.getenv("TFL_APP_KEY", "")
 OUTPUT_FILE = "live_data.json"
 
-# Use station names - TFL Journey Planner accepts these
-ORIGIN = "Streatham Common"
-DESTINATION = "Imperial Wharf"
+# Journey parameters - using the exact format that worked
+ORIGIN = "Streatham Common Rail Station"
+DESTINATION = "Imperial Wharf Rail Station"
 
 # TFL API endpoint
 TFL_BASE_URL = "https://api.tfl.gov.uk"
-
-
-def get_auth_params():
-    """Return authentication parameters if available."""
-    if TFL_APP_ID and TFL_APP_KEY:
-        return {"app_id": TFL_APP_ID, "app_key": TFL_APP_KEY}
-    return {}
 
 
 def get_journey_plan(origin, destination):
@@ -28,28 +21,22 @@ def get_journey_plan(origin, destination):
     url = f"{TFL_BASE_URL}/Journey/JourneyResults/{origin}/to/{destination}"
     
     params = {
-        "nationalSearch": "true",
         "mode": "overground,national-rail",
         "timeIs": "Departing",
         "journeyPreference": "LeastTime",
-        "maxTransferMinutes": "30",
-        "walkingSpeed": "Average"
+        "alternativeRoute": "true"
     }
-    params.update(get_auth_params())
+    
+    # Add API credentials if provided
+    if TFL_APP_ID and TFL_APP_KEY:
+        params["app_id"] = TFL_APP_ID
+        params["app_key"] = TFL_APP_KEY
     
     try:
         print(f"Fetching journeys from {origin} to {destination}...")
-        response = requests.get(url, params=params, timeout=15)
+        response = requests.get(url, params=params, timeout=10)
         response.raise_for_status()
-        data = response.json()
-        
-        # Debug: check if there's a disambiguation issue
-        if 'journeys' not in data:
-            print(f"Response keys: {data.keys()}")
-            if 'disambiguation' in data or 'fromLocationDisambiguation' in data:
-                print("Location disambiguation needed - trying with more specific names")
-        
-        return data
+        return response.json()
     except requests.exceptions.RequestException as e:
         print(f"ERROR: Failed to fetch TFL data: {e}")
         return None
@@ -70,39 +57,14 @@ def format_time(dt):
     return "N/A"
 
 
-def check_journey_via_clapham(journey):
-    """Check if journey goes via Clapham Junction."""
-    legs = journey.get('legs', [])
-    
-    for leg in legs:
-        instruction = leg.get('instruction', {})
-        summary = instruction.get('summary', '')
-        
-        if 'Clapham Junction' in summary:
-            return True
-        
-        # Check detailed instructions
-        details = instruction.get('detailed', '')
-        if 'Clapham Junction' in details:
-            return True
-        
-        # Check path stopPoints
-        path = leg.get('path', {})
-        stop_points = path.get('stopPoints', [])
-        for stop in stop_points:
-            stop_name = stop.get('name', '')
-            if 'Clapham Junction' in stop_name:
-                return True
-    
-    return False
-
-
-def extract_platform_from_text(text):
-    """Try to extract platform from text."""
-    if not text:
+def extract_platform_from_instruction(instruction_text):
+    """Try to extract platform from instruction text."""
+    if not instruction_text:
         return None
-        
-    text_lower = text.lower()
+    
+    text_lower = instruction_text.lower()
+    
+    # Look for "platform X" pattern
     if 'platform' in text_lower:
         parts = text_lower.split('platform')
         if len(parts) > 1:
@@ -115,7 +77,29 @@ def extract_platform_from_text(text):
                     break
             if platform:
                 return platform.upper()
+    
     return None
+
+
+def check_journey_via_clapham(journey):
+    """Check if journey goes via Clapham Junction."""
+    legs = journey.get('legs', [])
+    
+    for leg in legs:
+        instruction = leg.get('instruction', {})
+        summary = instruction.get('summary', '')
+        
+        if 'Clapham Junction' in summary:
+            return True
+        
+        # Check path stopPoints
+        path = leg.get('path', {})
+        stop_points = path.get('stopPoints', [])
+        for stop in stop_points:
+            if 'Clapham Junction' in stop.get('name', ''):
+                return True
+    
+    return False
 
 
 def process_journey(journey, journey_id):
@@ -126,7 +110,7 @@ def process_journey(journey, journey_id):
     
     legs = journey.get('legs', [])
     
-    # Find rail legs only
+    # Find rail legs (filter out walking)
     rail_legs = []
     for leg in legs:
         mode_name = leg.get('mode', {}).get('name', '')
@@ -141,21 +125,19 @@ def process_journey(journey, journey_id):
     leg1_depart = parse_datetime(leg1.get('departureTime'))
     leg1_arrive = parse_datetime(leg1.get('arrivalTime'))
     leg1_instruction = leg1.get('instruction', {})
-    leg1_summary = leg1_instruction.get('summary', '')
-    leg1_detailed = leg1_instruction.get('detailed', '')
     
-    # Try to extract platforms
-    leg1_platform = extract_platform_from_text(leg1_summary) or extract_platform_from_text(leg1_detailed)
+    # Try to extract platform from summary and detailed instructions
+    leg1_platform = (extract_platform_from_instruction(leg1_instruction.get('summary', '')) or 
+                     extract_platform_from_instruction(leg1_instruction.get('detailed', '')))
     
     # Second leg: Clapham Junction to Imperial Wharf
     leg2 = rail_legs[1]
     leg2_depart = parse_datetime(leg2.get('departureTime'))
     leg2_arrive = parse_datetime(leg2.get('arrivalTime'))
     leg2_instruction = leg2.get('instruction', {})
-    leg2_summary = leg2_instruction.get('summary', '')
-    leg2_detailed = leg2_instruction.get('detailed', '')
     
-    leg2_platform = extract_platform_from_text(leg2_summary) or extract_platform_from_text(leg2_detailed)
+    leg2_platform = (extract_platform_from_instruction(leg2_instruction.get('summary', '')) or 
+                     extract_platform_from_instruction(leg2_instruction.get('detailed', '')))
     
     # Calculate transfer time
     if leg1_arrive and leg2_depart:
@@ -166,20 +148,12 @@ def process_journey(journey, journey_id):
     # Determine status
     status = "On Time"
     for leg in legs:
-        disruptions = leg.get('disruptions', [])
-        if disruptions:
-            # Check severity
-            for disruption in disruptions:
-                severity = disruption.get('categoryDescription', '').lower()
-                if 'severe' in severity or 'major' in severity:
-                    status = "Severe Delays"
-                    break
-                elif status == "On Time":
-                    status = "Minor Delays"
-        
+        if leg.get('disruptions'):
+            status = "Disruption"
+            break
         if leg.get('isDisrupted'):
-            if status == "On Time":
-                status = "Delayed"
+            status = "Delayed"
+            break
     
     # Extract line names
     leg1_route = leg1.get('routeOptions', [])
@@ -229,33 +203,24 @@ def fetch_and_process_tfl_data(num_journeys=3):
     
     journey_data = get_journey_plan(ORIGIN, DESTINATION)
     
-    if not journey_data:
-        print("ERROR: No response from TFL API")
-        return []
-    
-    if 'journeys' not in journey_data:
-        print(f"ERROR: No journeys in response. Keys: {journey_data.keys()}")
-        # Try to show disambiguation info if present
-        if 'fromLocationDisambiguation' in journey_data:
-            print(f"From location status: {journey_data['fromLocationDisambiguation'].get('matchStatus')}")
-        if 'toLocationDisambiguation' in journey_data:
-            print(f"To location status: {journey_data['toLocationDisambiguation'].get('matchStatus')}")
+    if not journey_data or 'journeys' not in journey_data:
+        print("ERROR: No journey data received from TFL API")
         return []
     
     journeys = journey_data.get('journeys', [])
     print(f"Found {len(journeys)} total journeys from TFL")
     
-    # Process journeys
-    all_processed = []
+    # Process journeys that go via Clapham Junction
+    processed = []
     for idx, journey in enumerate(journeys, 1):
         try:
             if check_journey_via_clapham(journey):
-                processed_journey = process_journey(journey, len(all_processed) + 1)
+                processed_journey = process_journey(journey, len(processed) + 1)
                 if processed_journey:
-                    all_processed.append(processed_journey)
-                    print(f"✓ Journey {len(all_processed)}: {processed_journey['departureTime']} → {processed_journey['arrivalTime']} ({processed_journey['status']})")
+                    processed.append(processed_journey)
+                    print(f"✓ Journey {len(processed)}: {processed_journey['departureTime']} → {processed_journey['arrivalTime']}")
                     
-                    if len(all_processed) >= num_journeys:
+                    if len(processed) >= num_journeys:
                         break
         except Exception as e:
             print(f"ERROR processing journey {idx}: {e}")
@@ -263,8 +228,8 @@ def fetch_and_process_tfl_data(num_journeys=3):
             traceback.print_exc()
             continue
     
-    print(f"Successfully processed {len(all_processed)} journeys via Clapham Junction")
-    return all_processed
+    print(f"Successfully processed {len(processed)} journeys via Clapham Junction")
+    return processed
 
 
 def main():
