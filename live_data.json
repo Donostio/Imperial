@@ -5,7 +5,7 @@
         "arrivalTime": "10:14",
         "totalDuration": "23 min",
         "status": "Expected 09:51",
-        "live_updated_at": "08:43:13",
+        "live_updated_at": "08:50:18",
         "legs": [
             {
                 "origin": "SRC",
@@ -38,7 +38,7 @@
         "arrivalTime": "10:50",
         "totalDuration": "31 min",
         "status": "On Time",
-        "live_updated_at": "08:43:13",
+        "live_updated_at": "08:50:18",
         "legs": [
             {
                 "origin": "SRC",
