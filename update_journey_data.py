@@ -4,22 +4,26 @@ import requests
 from datetime import datetime, timedelta
 
 # --- Configuration ---
+# NOTE: TFL_APP_ID and TFL_APP_KEY must be set as environment variables
 TFL_APP_ID = os.getenv("TFL_APP_ID", "")
 TFL_APP_KEY = os.getenv("TFL_APP_KEY", "")
 OUTPUT_FILE = "live_data.json"
 
-# Journey parameters - using the exact format that worked
+# Journey parameters
 ORIGIN = "Streatham Common Rail Station"
 DESTINATION = "Imperial Wharf Rail Station"
 
 # TFL API endpoint
 TFL_BASE_URL = "https://api.tfl.gov.uk"
+NUM_JOURNEYS = 4 # Target the next four journeys
 
+# --- Utility Functions (Kept as is) ---
 
 def get_journey_plan(origin, destination):
     """Fetch journey plans from TFL Journey Planner API."""
     url = f"{TFL_BASE_URL}/Journey/JourneyResults/{origin}/to/{destination}"
     
+    # mode: ensures only train-based modes are considered (National Rail & Overground)
     params = {
         "mode": "overground,national-rail",
         "timeIs": "Departing",
@@ -80,125 +84,145 @@ def extract_platform_from_instruction(instruction_text):
     
     return None
 
-
-def check_journey_via_clapham(journey):
-    """Check if journey goes via Clapham Junction."""
-    legs = journey.get('legs', [])
-    
-    for leg in legs:
-        instruction = leg.get('instruction', {})
-        summary = instruction.get('summary', '')
-        
-        if 'Clapham Junction' in summary:
-            return True
-        
-        # Check path stopPoints
-        path = leg.get('path', {})
-        stop_points = path.get('stopPoints', [])
-        for stop in stop_points:
-            if 'Clapham Junction' in stop.get('name', ''):
-                return True
-    
-    return False
-
+# --- New/Modified Core Logic ---
 
 def process_journey(journey, journey_id):
-    """Process a TFL journey that goes via Clapham Junction."""
+    """Process a TFL journey for direct or two-train routes."""
     start_time = parse_datetime(journey.get('startDateTime'))
     arrival_time = parse_datetime(journey.get('arrivalDateTime'))
     duration_mins = journey.get('duration', 0)
     
     legs = journey.get('legs', [])
     
-    # Find rail legs (filter out walking)
-    rail_legs = []
-    for leg in legs:
-        mode_name = leg.get('mode', {}).get('name', '')
-        if mode_name not in ['walking', 'walk']:
-            rail_legs.append(leg)
+    # Filter for only rail legs (National Rail or Overground)
+    rail_legs = [
+        leg for leg in legs 
+        if leg.get('mode', {}).get('name', '') not in ['walking', 'walk']
+    ]
     
-    if len(rail_legs) < 2:
-        return None
+    if not rail_legs:
+        return None # Exclude journeys with no rail legs
     
-    # First leg: Streatham Common to Clapham Junction
-    leg1 = rail_legs[0]
-    leg1_depart = parse_datetime(leg1.get('departureTime'))
-    leg1_arrive = parse_datetime(leg1.get('arrivalTime'))
-    leg1_instruction = leg1.get('instruction', {})
-    
-    # Try to extract platform from summary and detailed instructions
-    leg1_platform = (extract_platform_from_instruction(leg1_instruction.get('summary', '')) or 
-                     extract_platform_from_instruction(leg1_instruction.get('detailed', '')))
-    
-    # Second leg: Clapham Junction to Imperial Wharf
-    leg2 = rail_legs[1]
-    leg2_depart = parse_datetime(leg2.get('departureTime'))
-    leg2_arrive = parse_datetime(leg2.get('arrivalTime'))
-    leg2_instruction = leg2.get('instruction', {})
-    
-    leg2_platform = (extract_platform_from_instruction(leg2_instruction.get('summary', '')) or 
-                     extract_platform_from_instruction(leg2_instruction.get('detailed', '')))
-    
-    # Calculate transfer time
-    if leg1_arrive and leg2_depart:
-        transfer_mins = int((leg2_depart - leg1_arrive).total_seconds() / 60)
-    else:
-        transfer_mins = 0
-    
+    # Check for non-train legs *between* train legs (e.g., bus/tube/multiple changes)
+    # The requirement is for train *only* (direct or 1 change, where the change is only a walk)
+    # A quick way to ensure this is to check if the total rail legs plus walking legs equals the total legs.
+    allowed_modes = ['walking', 'walk', 'national-rail', 'overground']
+    if any(leg.get('mode', {}).get('name', '') not in allowed_modes for leg in legs):
+        return None # Exclude complex multi-modal journeys
+
     # Determine status
     status = "On Time"
     for leg in legs:
-        if leg.get('disruptions'):
-            status = "Disruption"
+        if leg.get('disruptions') or leg.get('isDisrupted'):
+            status = "Disruption/Delayed"
             break
-        if leg.get('isDisrupted'):
-            status = "Delayed"
-            break
-    
-    # Extract line names
-    leg1_route = leg1.get('routeOptions', [])
-    leg1_line = leg1_route[0].get('name', 'Rail') if leg1_route else 'Rail'
-    
-    leg2_route = leg2.get('routeOptions', [])
-    leg2_line = leg2_route[0].get('name', 'Rail') if leg2_route else 'Rail'
-    
+            
+    processed_legs = []
+    transfer_mins = 0
+    is_two_train = False
+
+    # --- Direct Train (1 rail leg) ---
+    if len(rail_legs) == 1:
+        leg1 = rail_legs[0]
+        leg1_depart = parse_datetime(leg1.get('departureTime'))
+        leg1_arrive = parse_datetime(leg1.get('arrivalTime'))
+        leg1_instruction = leg1.get('instruction', {})
+        leg1_route = leg1.get('routeOptions', [])
+        leg1_line = leg1_route[0].get('name', 'Rail') if leg1_route else 'Rail'
+        
+        # Departure platform (at Streatham Common)
+        leg1_platform = (extract_platform_from_instruction(leg1_instruction.get('detailed', '')))
+        
+        # Arrival platform (at Imperial Wharf) - No platform data usually for arrival at destination
+        
+        processed_legs.append({
+            "origin": "Streatham Common",
+            "destination": "Imperial Wharf",
+            "departure": format_time(leg1_depart),
+            "arrival": format_time(leg1_arrive),
+            "departurePlatform": leg1_platform or "TBC",
+            "operator": leg1_line,
+            "status": status
+        })
+
+    # --- Two-Train Journey (2 rail legs) ---
+    elif len(rail_legs) == 2:
+        is_two_train = True
+        
+        # Leg 1: Streatham Common to Interchange (e.g. Clapham Junction)
+        leg1 = rail_legs[0]
+        leg1_depart = parse_datetime(leg1.get('departureTime'))
+        leg1_arrive = parse_datetime(leg1.get('arrivalTime'))
+        leg1_instruction = leg1.get('instruction', {})
+        leg1_route = leg1.get('routeOptions', [])
+        leg1_line = leg1_route[0].get('name', 'Rail') if leg1_route else 'Rail'
+
+        # Leg 2: Interchange to Imperial Wharf
+        leg2 = rail_legs[1]
+        leg2_depart = parse_datetime(leg2.get('departureTime'))
+        leg2_arrive = parse_datetime(leg2.get('arrivalTime'))
+        leg2_instruction = leg2.get('instruction', {})
+        leg2_route = leg2.get('routeOptions', [])
+        leg2_line = leg2_route[0].get('name', 'Rail') if leg2_route else 'Rail'
+
+        # Interchange Station (e.g., Clapham Junction)
+        interchange = leg1.get('arrivalPoint', {}).get('commonName', 'Interchange')
+
+        # Extract Platform data for Clapham Junction
+        leg1_arrival_platform = (extract_platform_from_instruction(leg1_instruction.get('detailed', '')))
+        leg2_departure_platform = (extract_platform_from_instruction(leg2_instruction.get('detailed', '')))
+
+        # Calculate transfer time
+        if leg1_arrive and leg2_depart:
+            transfer_mins = int((leg2_depart - leg1_arrive).total_seconds() / 60)
+        
+        # First Train Leg
+        processed_legs.append({
+            "origin": "Streatham Common",
+            "destination": interchange,
+            "departure": format_time(leg1_depart),
+            "arrival": format_time(leg1_arrive),
+            "arrivalPlatform_ClaphamJunction": leg1_arrival_platform or "TBC", # Specific request for arrival platform
+            "operator": leg1_line,
+            "status": status
+        })
+        
+        # Transfer Detail
+        processed_legs.append({
+            "type": "transfer",
+            "location": interchange,
+            "transferTime": f"{transfer_mins} min"
+        })
+        
+        # Second Train Leg
+        processed_legs.append({
+            "origin": interchange,
+            "destination": "Imperial Wharf",
+            "departure": format_time(leg2_depart),
+            "arrival": format_time(leg2_arrive),
+            "departurePlatform_ClaphamJunction": leg2_departure_platform or "TBC", # Specific request for departure platform
+            "operator": leg2_line,
+            "status": status
+        })
+
+    else:
+        # Exclude journeys with 0, 3, or more rail legs to simplify output
+        return None
+
     return {
         "id": journey_id,
+        "type": "Direct" if len(rail_legs) == 1 else "One Change",
         "departureTime": format_time(start_time),
         "arrivalTime": format_time(arrival_time),
         "totalDuration": f"{duration_mins} min",
         "status": status,
         "live_updated_at": datetime.now().strftime("%H:%M:%S"),
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Clapham Junction",
-                "departure": format_time(leg1_depart),
-                "arrival": format_time(leg1_arrive),
-                "arrivalPlatform": leg1_platform or "TBC",
-                "operator": leg1_line,
-                "status": status
-            },
-            {
-                "type": "transfer",
-                "location": "Clapham Junction",
-                "transferTime": f"{transfer_mins} min"
-            },
-            {
-                "origin": "Clapham Junction",
-                "destination": "Imperial Wharf",
-                "departure": format_time(leg2_depart),
-                "departurePlatform": leg2_platform or "TBC",
-                "arrival": format_time(leg2_arrive),
-                "operator": leg2_line,
-                "status": status
-            }
-        ]
+        "legs": processed_legs
     }
 
 
-def fetch_and_process_tfl_data(num_journeys=3):
-    """Fetch and process TFL journey data."""
+def fetch_and_process_tfl_data(num_journeys):
+    """Fetch and process TFL journey data for a fixed number of valid train journeys."""
     print(f"[{datetime.now().isoformat()}] Fetching TFL Journey Planner data...")
     
     journey_data = get_journey_plan(ORIGIN, DESTINATION)
@@ -210,30 +234,28 @@ def fetch_and_process_tfl_data(num_journeys=3):
     journeys = journey_data.get('journeys', [])
     print(f"Found {len(journeys)} total journeys from TFL")
     
-    # Process journeys that go via Clapham Junction
     processed = []
     for idx, journey in enumerate(journeys, 1):
         try:
-            if check_journey_via_clapham(journey):
-                processed_journey = process_journey(journey, len(processed) + 1)
-                if processed_journey:
-                    processed.append(processed_journey)
-                    print(f"✓ Journey {len(processed)}: {processed_journey['departureTime']} → {processed_journey['arrivalTime']}")
-                    
-                    if len(processed) >= num_journeys:
-                        break
+            processed_journey = process_journey(journey, len(processed) + 1)
+            if processed_journey:
+                processed.append(processed_journey)
+                print(f"✓ Journey {len(processed)} ({processed_journey['type']}): {processed_journey['departureTime']} → {processed_journey['arrivalTime']}")
+                
+                if len(processed) >= num_journeys:
+                    break
         except Exception as e:
             print(f"ERROR processing journey {idx}: {e}")
-            import traceback
-            traceback.print_exc()
+            # import traceback
+            # traceback.print_exc()
             continue
     
-    print(f"Successfully processed {len(processed)} journeys via Clapham Junction")
+    print(f"Successfully processed {len(processed)} train journeys (Direct or One Change)")
     return processed
 
 
 def main():
-    data = fetch_and_process_tfl_data(num_journeys=3)
+    data = fetch_and_process_tfl_data(NUM_JOURNEYS)
     
     if data:
         with open(OUTPUT_FILE, 'w') as f:
