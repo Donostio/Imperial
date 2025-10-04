@@ -1,63 +1,67 @@
 [
     {
         "id": 1,
-        "departureTime": "06:19",
-        "arrivalTime": "06:41",
-        "totalDuration": "22 min",
+        "departureTime": "06:43",
+        "arrivalTime": "07:14",
+        "totalDuration": "31 min",
         "status": "On Time",
-        "live_updated_at": "05:18:58",
+        "live_updated_at": "05:29:52",
         "legs": [
             {
                 "origin": "SRC",
                 "destination": "CLJ",
-                "departure": "06:19",
+                "departure": "06:43",
+                "arrival": "06:51",
                 "status": "On Time",
                 "platform": "2",
                 "operator": "Southern"
             },
             {
-                "operator": "Change Train",
-                "duration": "4 min",
+                "operator": "Change trains",
+                "duration": "13 min",
                 "status": "Connection"
             },
             {
                 "origin": "CLJ",
                 "destination": "IMW",
-                "departure": "06:31",
+                "departure": "07:04",
+                "arrival": "07:14",
                 "status": "On Time",
-                "platform": "TBC",
-                "operator": "Southern/Overground"
+                "platform": "17",
+                "operator": "London Overground"
             }
         ]
     },
     {
         "id": 2,
-        "departureTime": "06:20",
-        "arrivalTime": "06:42",
-        "totalDuration": "22 min",
+        "departureTime": "06:49",
+        "arrivalTime": "07:14",
+        "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "05:18:58",
+        "live_updated_at": "05:29:52",
         "legs": [
             {
                 "origin": "SRC",
                 "destination": "CLJ",
-                "departure": "06:20",
+                "departure": "06:49",
+                "arrival": "06:57",
                 "status": "On Time",
-                "platform": "1",
+                "platform": "2",
                 "operator": "Southern"
             },
             {
-                "operator": "Change Train",
-                "duration": "4 min",
+                "operator": "Change trains",
+                "duration": "7 min",
                 "status": "Connection"
             },
             {
                 "origin": "CLJ",
                 "destination": "IMW",
-                "departure": "06:32",
+                "departure": "07:04",
+                "arrival": "07:14",
                 "status": "On Time",
-                "platform": "TBC",
-                "operator": "Southern/Overground"
+                "platform": "17",
+                "operator": "London Overground"
             }
         ]
     }
