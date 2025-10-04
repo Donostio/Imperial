@@ -5,14 +5,14 @@
         "arrivalTime": "06:41",
         "totalDuration": "22 min",
         "status": "On Time",
-        "live_updated_at": "04:10:24",
+        "live_updated_at": "04:23:36",
         "legs": [
             {
                 "origin": "SRC",
                 "destination": "CLJ",
                 "departure": "06:19",
                 "status": "On Time",
-                "platform": "TBC",
+                "platform": "2",
                 "operator": "Southern"
             },
             {
@@ -36,14 +36,14 @@
         "arrivalTime": "06:42",
         "totalDuration": "22 min",
         "status": "On Time",
-        "live_updated_at": "04:10:24",
+        "live_updated_at": "04:23:36",
         "legs": [
             {
                 "origin": "SRC",
                 "destination": "CLJ",
                 "departure": "06:20",
                 "status": "On Time",
-                "platform": "TBC",
+                "platform": "1",
                 "operator": "Southern"
             },
             {
