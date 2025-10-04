@@ -40,10 +40,9 @@ def get_journey_plan(origin, destination):
         
         json_data = response.json()
         
-        # --- VERBOSE LOGGING ADDED HERE ---
+        # --- VERBOSE LOGGING ---
         print("\n" + "="*80)
         print(">>> START TFL RAW JSON RESPONSE <<<")
-        # Use json.dumps for clean, readable output of the entire response
         print(json.dumps(json_data, indent=2))
         print(">>> END TFL RAW JSON RESPONSE <<<")
         print("="*80 + "\n")
@@ -95,7 +94,6 @@ def extract_platform_from_instruction(instruction_text):
     return None
 
 
-# --- IMPROVED PLATFORM EXTRACTION (from previous fix) ---
 def get_platform_from_leg(leg, is_departure=False):
     """
     Tries to extract platform from the leg details (TFL specific fields).
@@ -140,20 +138,19 @@ def process_journey(journey, journey_id):
     if any(leg.get('mode', {}).get('name', '') not in allowed_modes for leg in legs):
         return None
 
-    # --- REFINED STATUS LOGIC ---
+    # --- REVISED STATUS LOGIC: Focus ONLY on Timing Delays ---
     status = "On Time"
-    has_disruption = any(leg.get('disruptions') for leg in legs)
     
-    # Check if any leg has an explicitly reported delay (arrivalDelay > 0 seconds)
-    # TFL provides delays in seconds
-    has_delay = any(
-        leg.get('arrivalPoint', {}).get('timing', {}).get('arrivalDelay', 0) > 0 
+    # Check if any leg has an explicitly reported arrival delay greater than 60 seconds (1 minute).
+    # This filters out minor fluctuations and general station advisories.
+    has_explicit_delay = any(
+        leg.get('arrivalPoint', {}).get('timing', {}).get('arrivalDelay', 0) > 60 
         for leg in legs
     )
     
-    if has_disruption or has_delay:
-        status = "Disruption/Delayed"
-    # --- END REFINED STATUS LOGIC ---
+    if has_explicit_delay:
+        status = "Delayed" 
+    # --- END REVISED STATUS LOGIC ---
             
     processed_legs = []
     transfer_mins = 0
@@ -254,7 +251,6 @@ def process_journey(journey, journey_id):
 
 def fetch_and_process_tfl_data(num_journeys):
     """Fetch and process TFL journey data for a fixed number of valid train journeys."""
-    # print(f"[{datetime.now().isoformat()}] Fetching TFL Journey Planner data...")
     
     journey_data = get_journey_plan(ORIGIN, DESTINATION)
     
@@ -271,7 +267,7 @@ def fetch_and_process_tfl_data(num_journeys):
             processed_journey = process_journey(journey, len(processed) + 1)
             if processed_journey:
                 processed.append(processed_journey)
-                print(f"✓ Journey {len(processed)} ({processed_journey['type']}): {processed_journey['departureTime']} → {processed_journey['arrivalTime']}")
+                print(f"✓ Journey {len(processed)} ({processed_journey['type']}): {processed_journey['departureTime']} → {processed_journey['arrivalTime']} | Status: {processed_journey['status']}")
                 
                 if len(processed) >= num_journeys:
                     break
