@@ -5,8 +5,8 @@
         "departureTime": "11:49",
         "arrivalTime": "12:23",
         "totalDuration": "34 min",
-        "status": "Disruption/Delayed",
-        "live_updated_at": "10:38:30",
+        "status": "On Time",
+        "live_updated_at": "10:45:38",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -15,7 +15,7 @@
                 "arrival": "12:01",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
-                "status": "Disruption/Delayed"
+                "status": "On Time"
             },
             {
                 "type": "transfer",
@@ -29,7 +29,7 @@
                 "arrival": "12:23",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
-                "status": "Disruption/Delayed"
+                "status": "On Time"
             }
         ]
     },
@@ -39,8 +39,8 @@
         "departureTime": "12:25",
         "arrivalTime": "12:45",
         "totalDuration": "20 min",
-        "status": "Disruption/Delayed",
-        "live_updated_at": "10:38:30",
+        "status": "On Time",
+        "live_updated_at": "10:45:38",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -49,7 +49,7 @@
                 "arrival": "12:45",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
-                "status": "Disruption/Delayed"
+                "status": "On Time"
             }
         ]
     },
@@ -59,8 +59,8 @@
         "departureTime": "12:49",
         "arrivalTime": "13:23",
         "totalDuration": "34 min",
-        "status": "Disruption/Delayed",
-        "live_updated_at": "10:38:30",
+        "status": "On Time",
+        "live_updated_at": "10:45:38",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -69,7 +69,7 @@
                 "arrival": "13:01",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
-                "status": "Disruption/Delayed"
+                "status": "On Time"
             },
             {
                 "type": "transfer",
@@ -83,7 +83,7 @@
                 "arrival": "13:23",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
-                "status": "Disruption/Delayed"
+                "status": "On Time"
             }
         ]
     }
