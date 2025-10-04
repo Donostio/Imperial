@@ -1,44 +1,11 @@
 [
     {
         "id": 1,
-        "departureTime": "06:43",
-        "arrivalTime": "07:14",
-        "totalDuration": "31 min",
-        "status": "On Time",
-        "live_updated_at": "05:38:15",
-        "legs": [
-            {
-                "origin": "SRC",
-                "destination": "CLJ",
-                "departure": "06:43",
-                "arrival": "06:51",
-                "status": "On Time",
-                "platform": "2",
-                "operator": "Southern"
-            },
-            {
-                "operator": "Change trains",
-                "duration": "13 min",
-                "status": "Connection"
-            },
-            {
-                "origin": "CLJ",
-                "destination": "IMW",
-                "departure": "07:04",
-                "arrival": "07:14",
-                "status": "On Time",
-                "platform": "17",
-                "operator": "London Overground"
-            }
-        ]
-    },
-    {
-        "id": 2,
         "departureTime": "06:49",
         "arrivalTime": "07:14",
         "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "05:38:15",
+        "live_updated_at": "05:45:27",
         "legs": [
             {
                 "origin": "SRC",
@@ -62,6 +29,39 @@
                 "status": "On Time",
                 "platform": "17",
                 "operator": "London Overground"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "departureTime": "07:19",
+        "arrivalTime": "07:49",
+        "totalDuration": "30 min",
+        "status": "On Time",
+        "live_updated_at": "05:45:27",
+        "legs": [
+            {
+                "origin": "SRC",
+                "destination": "CLJ",
+                "departure": "07:19",
+                "arrival": "07:27",
+                "status": "On Time",
+                "platform": "2",
+                "operator": "Southern"
+            },
+            {
+                "operator": "Change trains",
+                "duration": "12 min",
+                "status": "Connection"
+            },
+            {
+                "origin": "CLJ",
+                "destination": "IMW",
+                "departure": "07:39",
+                "arrival": "07:49",
+                "status": "On Time",
+                "platform": "16",
+                "operator": "Southern"
             }
         ]
     }
