@@ -1,62 +1,62 @@
 [
     {
         "id": 1,
-        "departureTime": "19:25",
-        "arrivalTime": "19:55",
-        "totalDuration": "30 min",
+        "departureTime": "06:19",
+        "arrivalTime": "06:41",
+        "totalDuration": "22 min",
         "status": "On Time",
-        "live_updated_at": "21:57:24",
+        "live_updated_at": "03:26:14",
         "legs": [
             {
                 "origin": "SRC",
                 "destination": "CLJ",
-                "departure": "19:25",
+                "departure": "06:19",
                 "status": "On Time",
-                "platform": "2",
+                "platform": "TBC",
                 "operator": "Southern"
             },
             {
                 "operator": "Change Train",
-                "duration": "5 min",
+                "duration": "4 min",
                 "status": "Connection"
             },
             {
                 "origin": "CLJ",
                 "destination": "IMW",
-                "departure": "19:40",
+                "departure": "06:31",
                 "status": "On Time",
-                "platform": "17",
+                "platform": "TBC",
                 "operator": "Southern/Overground"
             }
         ]
     },
     {
         "id": 2,
-        "departureTime": "19:40",
-        "arrivalTime": "20:15",
-        "totalDuration": "35 min",
+        "departureTime": "06:20",
+        "arrivalTime": "06:42",
+        "totalDuration": "22 min",
         "status": "On Time",
-        "live_updated_at": "21:57:24",
+        "live_updated_at": "03:26:14",
         "legs": [
             {
                 "origin": "SRC",
                 "destination": "CLJ",
-                "departure": "19:40",
-                "status": "Varies",
-                "platform": "2",
+                "departure": "06:20",
+                "status": "On Time",
+                "platform": "TBC",
                 "operator": "Southern"
             },
             {
                 "operator": "Change Train",
-                "duration": "6 min",
+                "duration": "4 min",
                 "status": "Connection"
             },
             {
                 "origin": "CLJ",
                 "destination": "IMW",
-                "departure": "19:56",
-                "status": "Varies",
-                "platform": "17",
+                "departure": "06:32",
+                "status": "On Time",
+                "platform": "TBC",
                 "operator": "Southern/Overground"
             }
         ]
