@@ -1,44 +1,11 @@
 [
     {
         "id": 1,
-        "departureTime": "09:51",
-        "arrivalTime": "10:14",
-        "totalDuration": "23 min",
-        "status": "Expected 09:51",
-        "live_updated_at": "08:50:18",
-        "legs": [
-            {
-                "origin": "SRC",
-                "destination": "CLJ",
-                "departure": "09:51",
-                "arrival": "09:59",
-                "status": "Expected 09:51",
-                "platform": "2",
-                "operator": "Southern"
-            },
-            {
-                "operator": "Change trains",
-                "duration": "5 min",
-                "status": "Connection"
-            },
-            {
-                "origin": "CLJ",
-                "destination": "IMW",
-                "departure": "10:04",
-                "arrival": "10:14",
-                "status": "On Time",
-                "platform": "17",
-                "operator": "London Overground"
-            }
-        ]
-    },
-    {
-        "id": 2,
         "departureTime": "10:19",
         "arrivalTime": "10:50",
         "totalDuration": "31 min",
         "status": "On Time",
-        "live_updated_at": "08:50:18",
+        "live_updated_at": "08:57:52",
         "legs": [
             {
                 "origin": "SRC",
@@ -52,6 +19,39 @@
             {
                 "operator": "Change trains",
                 "duration": "13 min",
+                "status": "Connection"
+            },
+            {
+                "origin": "CLJ",
+                "destination": "IMW",
+                "departure": "10:40",
+                "arrival": "10:50",
+                "status": "On Time",
+                "platform": "16",
+                "operator": "Southern"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "departureTime": "10:25",
+        "arrivalTime": "10:50",
+        "totalDuration": "25 min",
+        "status": "On Time",
+        "live_updated_at": "08:57:52",
+        "legs": [
+            {
+                "origin": "SRC",
+                "destination": "CLJ",
+                "departure": "10:25",
+                "arrival": "10:33",
+                "status": "On Time",
+                "platform": "2",
+                "operator": "Southern"
+            },
+            {
+                "operator": "Change trains",
+                "duration": "7 min",
                 "status": "Connection"
             },
             {
