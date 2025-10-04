@@ -97,14 +97,35 @@ def extract_platform_from_instruction(instruction_text):
 def get_platform_from_leg(leg, is_departure=False):
     """
     Tries to extract platform from the leg details (TFL specific fields).
-    Checks leg.departurePoint/arrivalPoint.platform first, then instruction text.
+    Prioritizes the 'indicator' field, which often holds the platform number.
     """
-    # 1. Check the official platform property on the point (most reliable)
+    
+    # Define the point we are checking (Departure or Arrival)
     point = leg.get('departurePoint' if is_departure else 'arrivalPoint', {})
-    if point.get('platform'):
-        return str(point['platform']).upper()
+    
+    # 1. PRIMARY CHECK: Check the 'indicator' field 
+    if point.get('indicator'):
+        platform_indicator = str(point['indicator']).upper()
+        if platform_indicator and platform_indicator != 'TBC':
+            return platform_indicator
 
-    # 2. Check the instruction text as a fallback
+    # 2. Secondary Check: Check the 'platform' field 
+    if point.get('platform'):
+        platform_val = str(point['platform']).upper()
+        if platform_val and platform_val != 'TBC':
+            return platform_val
+
+    # 3. Tertiary Check: Check the 'platformName' field 
+    if point.get('platformName'):
+        name = str(point['platformName'])
+        if "Platform" in name:
+             platform_name_extracted = name.split('Platform')[-1].strip().upper()
+             if platform_name_extracted:
+                return platform_name_extracted
+        elif name and name.isalnum(): 
+            return name.upper()
+    
+    # 4. Fallback to Instruction Text (Least reliable)
     instruction = leg.get('instruction', {})
     instruction_text = instruction.get('detailed', instruction.get('summary', ''))
     
