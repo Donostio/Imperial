@@ -1,20 +1,34 @@
 [
     {
         "id": 1,
-        "type": "Direct",
-        "departureTime": "07:25",
-        "arrivalTime": "07:43",
-        "totalDuration": "18 min",
+        "type": "One Change",
+        "departureTime": "07:28",
+        "arrivalTime": "07:48",
+        "totalDuration": "20 min",
         "status": "On Time",
-        "live_updated_at": "06:13:18",
+        "live_updated_at": "06:28:36",
         "legs": [
             {
                 "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "07:25",
-                "arrival": "07:43",
-                "departurePlatform": "TBC",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "07:28",
+                "arrival": "07:37",
+                "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "7 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "07:44",
+                "arrival": "07:48",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
                 "status": "On Time"
             }
         ]
@@ -26,7 +40,7 @@
         "arrivalTime": "08:26",
         "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "06:13:18",
+        "live_updated_at": "06:28:36",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -60,7 +74,7 @@
         "arrivalTime": "08:38",
         "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "06:13:18",
+        "live_updated_at": "06:28:36",
         "legs": [
             {
                 "origin": "Streatham Common",
