@@ -2,51 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "07:45",
-        "arrivalTime": "08:15",
-        "totalDuration": "30 min",
-        "status": "On Time",
-        "live_updated_at": "06:44:51",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Clapham Junction Rail Station",
-                "departure": "07:45",
-                "arrival": "07:54",
-                "arrivalPlatform_ClaphamJunction": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            },
-            {
-                "type": "transfer",
-                "location": "Clapham Junction Rail Station",
-                "transferTime": "17 min"
-            },
-            {
-                "origin": "Clapham Junction Rail Station",
-                "destination": "Imperial Wharf",
-                "departure": "08:11",
-                "arrival": "08:15",
-                "departurePlatform_ClaphamJunction": "TBC",
-                "operator": "Mildmay",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "type": "One Change",
-        "departureTime": "08:03",
+        "departureTime": "08:06",
         "arrivalTime": "08:26",
-        "totalDuration": "23 min",
+        "totalDuration": "20 min",
         "status": "On Time",
-        "live_updated_at": "06:44:51",
+        "live_updated_at": "06:54:48",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "08:03",
-                "arrival": "08:11",
+                "departure": "08:06",
+                "arrival": "08:15",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -54,7 +20,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "11 min"
+                "transferTime": "7 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
@@ -68,18 +34,52 @@
         ]
     },
     {
+        "id": 2,
+        "type": "One Change",
+        "departureTime": "08:17",
+        "arrivalTime": "08:38",
+        "totalDuration": "21 min",
+        "status": "On Time",
+        "live_updated_at": "06:54:48",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "08:17",
+                "arrival": "08:27",
+                "arrivalPlatform_ClaphamJunction": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "7 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "08:34",
+                "arrival": "08:38",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
         "id": 3,
         "type": "Direct",
-        "departureTime": "08:25",
+        "departureTime": "08:29",
         "arrivalTime": "08:43",
-        "totalDuration": "18 min",
+        "totalDuration": "14 min",
         "status": "On Time",
-        "live_updated_at": "06:44:51",
+        "live_updated_at": "06:54:48",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Imperial Wharf",
-                "departure": "08:25",
+                "departure": "08:29",
                 "arrival": "08:43",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
