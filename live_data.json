@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "16:11",
+        "departureTime": "16:12",
         "arrivalTime": "16:37",
-        "totalDuration": "26 min",
+        "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "15:01:32",
+        "live_updated_at": "15:12:39",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "16:11",
-                "arrival": "16:20",
+                "departure": "16:12",
+                "arrival": "16:21",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -20,7 +20,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "13 min"
+                "transferTime": "12 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
@@ -36,16 +36,16 @@
     {
         "id": 2,
         "type": "Direct",
-        "departureTime": "16:25",
+        "departureTime": "16:27",
         "arrivalTime": "16:42",
-        "totalDuration": "17 min",
+        "totalDuration": "15 min",
         "status": "On Time",
-        "live_updated_at": "15:01:32",
+        "live_updated_at": "15:12:39",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Imperial Wharf",
-                "departure": "16:25",
+                "departure": "16:27",
                 "arrival": "16:42",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
@@ -60,7 +60,7 @@
         "arrivalTime": "17:02",
         "totalDuration": "22 min",
         "status": "On Time",
-        "live_updated_at": "15:01:32",
+        "live_updated_at": "15:12:39",
         "legs": [
             {
                 "origin": "Streatham Common",
