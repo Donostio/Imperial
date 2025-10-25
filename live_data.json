@@ -6,7 +6,7 @@
         "arrivalTime": "12:12",
         "totalDuration": "53 min",
         "status": "On Time",
-        "live_updated_at": "10:08:25",
+        "live_updated_at": "10:20:20",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -40,7 +40,7 @@
         "arrivalTime": "12:43",
         "totalDuration": "54 min",
         "status": "On Time",
-        "live_updated_at": "10:08:25",
+        "live_updated_at": "10:20:20",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -74,7 +74,7 @@
         "arrivalTime": "13:12",
         "totalDuration": "53 min",
         "status": "On Time",
-        "live_updated_at": "10:08:25",
+        "live_updated_at": "10:20:20",
         "legs": [
             {
                 "origin": "Streatham Common",
