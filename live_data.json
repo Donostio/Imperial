@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "17:52",
-        "arrivalTime": "18:42",
-        "totalDuration": "50 min",
+        "departureTime": "18:23",
+        "arrivalTime": "19:12",
+        "totalDuration": "49 min",
         "status": "On Time",
-        "live_updated_at": "17:48:35",
+        "live_updated_at": "17:56:07",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "17:52",
-                "arrival": "18:02",
+                "departure": "18:23",
+                "arrival": "18:32",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -21,40 +21,6 @@
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
                 "transferTime": "8 min"
-            },
-            {
-                "origin": "Clapham Junction Rail Station",
-                "destination": "Imperial Wharf",
-                "departure": "18:10",
-                "arrival": "18:13",
-                "departurePlatform_ClaphamJunction": "TBC",
-                "operator": "South Western Railway",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "type": "One Change",
-        "departureTime": "18:21",
-        "arrivalTime": "19:12",
-        "totalDuration": "51 min",
-        "status": "On Time",
-        "live_updated_at": "17:48:35",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Clapham Junction Rail Station",
-                "departure": "18:21",
-                "arrival": "18:30",
-                "arrivalPlatform_ClaphamJunction": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            },
-            {
-                "type": "transfer",
-                "location": "Clapham Junction Rail Station",
-                "transferTime": "10 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
@@ -68,13 +34,13 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "One Change",
         "departureTime": "18:39",
         "arrivalTime": "19:34",
         "totalDuration": "55 min",
         "status": "On Time",
-        "live_updated_at": "17:48:35",
+        "live_updated_at": "17:56:07",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -95,6 +61,40 @@
                 "destination": "Imperial Wharf",
                 "departure": "19:02",
                 "arrival": "19:05",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "South Western Railway",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "One Change",
+        "departureTime": "18:53",
+        "arrivalTime": "19:42",
+        "totalDuration": "49 min",
+        "status": "On Time",
+        "live_updated_at": "17:56:07",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "18:53",
+                "arrival": "19:01",
+                "arrivalPlatform_ClaphamJunction": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "9 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "19:10",
+                "arrival": "19:13",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "South Western Railway",
                 "status": "On Time"
