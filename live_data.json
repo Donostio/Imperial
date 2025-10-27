@@ -6,7 +6,7 @@
         "arrivalTime": "08:42",
         "totalDuration": "53 min",
         "status": "On Time",
-        "live_updated_at": "07:41:34",
+        "live_updated_at": "07:49:04",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -20,12 +20,12 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "8 min"
+                "transferTime": "10 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "08:10",
+                "departure": "08:12",
                 "arrival": "08:13",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "South Western Railway",
@@ -40,7 +40,7 @@
         "arrivalTime": "08:56",
         "totalDuration": "55 min",
         "status": "On Time",
-        "live_updated_at": "07:41:34",
+        "live_updated_at": "07:49:04",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -74,7 +74,7 @@
         "arrivalTime": "09:04",
         "totalDuration": "55 min",
         "status": "On Time",
-        "live_updated_at": "07:41:34",
+        "live_updated_at": "07:49:04",
         "legs": [
             {
                 "origin": "Streatham Common",
