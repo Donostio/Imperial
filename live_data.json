@@ -6,7 +6,7 @@
         "arrivalTime": "10:43",
         "totalDuration": "18 min",
         "status": "On Time",
-        "live_updated_at": "10:09:54",
+        "live_updated_at": "10:23:05",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -26,13 +26,13 @@
         "arrivalTime": "10:53",
         "totalDuration": "21 min",
         "status": "On Time",
-        "live_updated_at": "10:09:54",
+        "live_updated_at": "10:23:05",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
                 "departure": "10:32",
-                "arrival": "10:42",
+                "arrival": "10:41",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -40,7 +40,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "7 min"
+                "transferTime": "8 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
@@ -60,13 +60,13 @@
         "arrivalTime": "11:24",
         "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "10:09:54",
+        "live_updated_at": "10:23:05",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
                 "departure": "10:59",
-                "arrival": "11:08",
+                "arrival": "11:09",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -74,7 +74,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "12 min"
+                "transferTime": "11 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
