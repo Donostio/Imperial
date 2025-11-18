@@ -6,7 +6,7 @@
         "arrivalTime": "06:13",
         "totalDuration": "24 min",
         "status": "On Time",
-        "live_updated_at": "01:49:32",
+        "live_updated_at": "02:24:47",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -35,20 +35,34 @@
     },
     {
         "id": 2,
-        "type": "Direct",
-        "departureTime": "06:25",
-        "arrivalTime": "06:42",
-        "totalDuration": "17 min",
+        "type": "One Change",
+        "departureTime": "06:19",
+        "arrivalTime": "06:52",
+        "totalDuration": "33 min",
         "status": "On Time",
-        "live_updated_at": "01:49:32",
+        "live_updated_at": "02:24:47",
         "legs": [
             {
                 "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "06:25",
-                "arrival": "06:42",
-                "departurePlatform": "TBC",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "06:19",
+                "arrival": "06:31",
+                "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "17 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "06:48",
+                "arrival": "06:52",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
                 "status": "On Time"
             }
         ]
@@ -60,7 +74,7 @@
         "arrivalTime": "07:02",
         "totalDuration": "21 min",
         "status": "On Time",
-        "live_updated_at": "01:49:32",
+        "live_updated_at": "02:24:47",
         "legs": [
             {
                 "origin": "Streatham Common",
