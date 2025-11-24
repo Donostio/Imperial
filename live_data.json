@@ -2,16 +2,16 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "19:39",
-        "arrivalTime": "20:11",
+        "departureTime": "19:40",
+        "arrivalTime": "20:12",
         "totalDuration": "32 min",
         "status": "On Time",
-        "live_updated_at": "19:30:03",
+        "live_updated_at": "19:38:14",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "19:39",
+                "departure": "19:40",
                 "arrival": "19:50",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
@@ -26,7 +26,7 @@
                 "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
                 "departure": "20:02",
-                "arrival": "20:11",
+                "arrival": "20:12",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
@@ -40,7 +40,7 @@
         "arrivalTime": "20:22",
         "totalDuration": "33 min",
         "status": "On Time",
-        "live_updated_at": "19:30:03",
+        "live_updated_at": "19:38:14",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -70,16 +70,16 @@
     {
         "id": 3,
         "type": "One Change",
-        "departureTime": "20:11",
+        "departureTime": "20:12",
         "arrivalTime": "20:38",
-        "totalDuration": "27 min",
+        "totalDuration": "26 min",
         "status": "On Time",
-        "live_updated_at": "19:30:03",
+        "live_updated_at": "19:38:14",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "20:11",
+                "departure": "20:12",
                 "arrival": "20:20",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
