@@ -1,32 +1,12 @@
 [
     {
         "id": 1,
-        "type": "Direct",
-        "departureTime": "18:33",
-        "arrivalTime": "18:46",
-        "totalDuration": "13 min",
-        "status": "On Time",
-        "live_updated_at": "18:24:41",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "18:33",
-                "arrival": "18:46",
-                "departurePlatform": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
         "type": "One Change",
         "departureTime": "18:49",
         "arrivalTime": "19:24",
         "totalDuration": "35 min",
         "status": "On Time",
-        "live_updated_at": "18:24:41",
+        "live_updated_at": "18:39:14",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -54,13 +34,13 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "Direct",
         "departureTime": "19:25",
         "arrivalTime": "19:40",
         "totalDuration": "15 min",
         "status": "On Time",
-        "live_updated_at": "18:24:41",
+        "live_updated_at": "18:39:14",
         "legs": [
             {
                 "origin": "Streatham Common",
