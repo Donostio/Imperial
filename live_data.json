@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "20:44",
-        "arrivalTime": "21:18",
-        "totalDuration": "34 min",
+        "departureTime": "20:49",
+        "arrivalTime": "21:24",
+        "totalDuration": "35 min",
         "status": "On Time",
-        "live_updated_at": "20:33:51",
+        "live_updated_at": "20:43:29",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "20:44",
-                "arrival": "20:58",
+                "departure": "20:49",
+                "arrival": "21:00",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -20,15 +20,15 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "16 min"
+                "transferTime": "19 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "21:14",
-                "arrival": "21:18",
+                "departure": "21:19",
+                "arrival": "21:24",
                 "departurePlatform_ClaphamJunction": "TBC",
-                "operator": "Mildmay",
+                "operator": "Southern",
                 "status": "On Time"
             }
         ]
@@ -40,7 +40,7 @@
         "arrivalTime": "21:48",
         "totalDuration": "27 min",
         "status": "On Time",
-        "live_updated_at": "20:33:51",
+        "live_updated_at": "20:43:29",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -74,7 +74,7 @@
         "arrivalTime": "22:18",
         "totalDuration": "34 min",
         "status": "On Time",
-        "live_updated_at": "20:33:51",
+        "live_updated_at": "20:43:29",
         "legs": [
             {
                 "origin": "Streatham Common",
