@@ -2,16 +2,16 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "19:44",
+        "departureTime": "19:45",
         "arrivalTime": "20:18",
-        "totalDuration": "34 min",
+        "totalDuration": "33 min",
         "status": "On Time",
-        "live_updated_at": "19:30:21",
+        "live_updated_at": "19:38:09",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "19:44",
+                "departure": "19:45",
                 "arrival": "19:58",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
@@ -40,7 +40,7 @@
         "arrivalTime": "20:49",
         "totalDuration": "28 min",
         "status": "On Time",
-        "live_updated_at": "19:30:21",
+        "live_updated_at": "19:38:09",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -70,17 +70,17 @@
     {
         "id": 3,
         "type": "One Change",
-        "departureTime": "20:49",
+        "departureTime": "20:51",
         "arrivalTime": "21:18",
-        "totalDuration": "29 min",
+        "totalDuration": "27 min",
         "status": "On Time",
-        "live_updated_at": "19:30:21",
+        "live_updated_at": "19:38:09",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "20:49",
-                "arrival": "21:00",
+                "departure": "20:51",
+                "arrival": "21:02",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -88,7 +88,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "14 min"
+                "transferTime": "12 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
