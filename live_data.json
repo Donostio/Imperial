@@ -6,7 +6,7 @@
         "arrivalTime": "11:45",
         "totalDuration": "20 min",
         "status": "On Time",
-        "live_updated_at": "09:17:58",
+        "live_updated_at": "09:29:42",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -23,10 +23,10 @@
         "id": 2,
         "type": "One Change",
         "departureTime": "11:49",
-        "arrivalTime": "12:23",
-        "totalDuration": "34 min",
+        "arrivalTime": "12:37",
+        "totalDuration": "48 min",
         "status": "On Time",
-        "live_updated_at": "09:17:58",
+        "live_updated_at": "09:29:42",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -40,13 +40,13 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "18 min"
+                "transferTime": "32 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "12:19",
-                "arrival": "12:23",
+                "departure": "12:33",
+                "arrival": "12:37",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
@@ -60,7 +60,7 @@
         "arrivalTime": "12:45",
         "totalDuration": "20 min",
         "status": "On Time",
-        "live_updated_at": "09:17:58",
+        "live_updated_at": "09:29:42",
         "legs": [
             {
                 "origin": "Streatham Common",
