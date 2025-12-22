@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "Direct",
-        "departureTime": "14:33",
-        "arrivalTime": "14:46",
+        "departureTime": "14:35",
+        "arrivalTime": "14:48",
         "totalDuration": "13 min",
         "status": "On Time",
-        "live_updated_at": "14:22:36",
+        "live_updated_at": "14:35:29",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Imperial Wharf",
-                "departure": "14:33",
-                "arrival": "14:46",
+                "departure": "14:35",
+                "arrival": "14:48",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -26,7 +26,7 @@
         "arrivalTime": "15:13",
         "totalDuration": "24 min",
         "status": "On Time",
-        "live_updated_at": "14:22:36",
+        "live_updated_at": "14:35:29",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -55,20 +55,34 @@
     },
     {
         "id": 3,
-        "type": "Direct",
-        "departureTime": "15:33",
-        "arrivalTime": "15:46",
-        "totalDuration": "13 min",
+        "type": "One Change",
+        "departureTime": "15:19",
+        "arrivalTime": "15:50",
+        "totalDuration": "31 min",
         "status": "On Time",
-        "live_updated_at": "14:22:36",
+        "live_updated_at": "14:35:29",
         "legs": [
             {
                 "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "15:33",
-                "arrival": "15:46",
-                "departurePlatform": "TBC",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "15:19",
+                "arrival": "15:31",
+                "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "15 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "15:46",
+                "arrival": "15:50",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
                 "status": "On Time"
             }
         ]
