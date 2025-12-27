@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "22:30",
+        "departureTime": "22:19",
         "arrivalTime": "22:53",
-        "totalDuration": "23 min",
+        "totalDuration": "34 min",
         "status": "On Time",
-        "live_updated_at": "21:54:18",
+        "live_updated_at": "22:02:27",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "22:30",
-                "arrival": "22:40",
+                "departure": "22:19",
+                "arrival": "22:31",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -20,7 +20,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "9 min"
+                "transferTime": "18 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
@@ -36,17 +36,17 @@
     {
         "id": 2,
         "type": "Direct",
-        "departureTime": "22:44",
-        "arrivalTime": "22:57",
+        "departureTime": "22:46",
+        "arrivalTime": "22:59",
         "totalDuration": "13 min",
         "status": "On Time",
-        "live_updated_at": "21:54:18",
+        "live_updated_at": "22:02:27",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Imperial Wharf",
-                "departure": "22:44",
-                "arrival": "22:57",
+                "departure": "22:46",
+                "arrival": "22:59",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -60,7 +60,7 @@
         "arrivalTime": "23:23",
         "totalDuration": "34 min",
         "status": "On Time",
-        "live_updated_at": "21:54:18",
+        "live_updated_at": "22:02:27",
         "legs": [
             {
                 "origin": "Streatham Common",
