@@ -2,31 +2,11 @@
     {
         "id": 1,
         "type": "Direct",
-        "departureTime": "20:53",
-        "arrivalTime": "21:06",
-        "totalDuration": "13 min",
-        "status": "On Time",
-        "live_updated_at": "20:48:15",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "20:53",
-                "arrival": "21:06",
-                "departurePlatform": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "type": "Direct",
         "departureTime": "21:25",
         "arrivalTime": "21:42",
         "totalDuration": "17 min",
         "status": "On Time",
-        "live_updated_at": "20:48:15",
+        "live_updated_at": "20:56:34",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -40,13 +20,13 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "One Change",
         "departureTime": "21:49",
         "arrivalTime": "22:22",
         "totalDuration": "33 min",
         "status": "On Time",
-        "live_updated_at": "20:48:15",
+        "live_updated_at": "20:56:34",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -69,6 +49,26 @@
                 "arrival": "22:22",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "Direct",
+        "departureTime": "22:25",
+        "arrivalTime": "22:42",
+        "totalDuration": "17 min",
+        "status": "On Time",
+        "live_updated_at": "20:56:34",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Imperial Wharf",
+                "departure": "22:25",
+                "arrival": "22:42",
+                "departurePlatform": "TBC",
+                "operator": "Southern",
                 "status": "On Time"
             }
         ]
