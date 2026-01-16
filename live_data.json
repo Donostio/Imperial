@@ -1,32 +1,12 @@
 [
     {
         "id": 1,
-        "type": "Direct",
-        "departureTime": "20:25",
-        "arrivalTime": "20:42",
-        "totalDuration": "17 min",
-        "status": "On Time",
-        "live_updated_at": "20:20:15",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "20:25",
-                "arrival": "20:42",
-                "departurePlatform": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
         "type": "One Change",
         "departureTime": "20:49",
         "arrivalTime": "21:26",
         "totalDuration": "37 min",
         "status": "On Time",
-        "live_updated_at": "20:20:15",
+        "live_updated_at": "20:32:54",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -47,6 +27,60 @@
                 "destination": "Imperial Wharf",
                 "departure": "21:22",
                 "arrival": "21:26",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "type": "Direct",
+        "departureTime": "21:25",
+        "arrivalTime": "21:42",
+        "totalDuration": "17 min",
+        "status": "On Time",
+        "live_updated_at": "20:32:54",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Imperial Wharf",
+                "departure": "21:25",
+                "arrival": "21:42",
+                "departurePlatform": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "One Change",
+        "departureTime": "21:49",
+        "arrivalTime": "22:22",
+        "totalDuration": "33 min",
+        "status": "On Time",
+        "live_updated_at": "20:32:54",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "21:49",
+                "arrival": "22:01",
+                "arrivalPlatform_ClaphamJunction": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "17 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "22:18",
+                "arrival": "22:22",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
