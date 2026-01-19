@@ -2,31 +2,11 @@
     {
         "id": 1,
         "type": "Direct",
-        "departureTime": "07:29",
-        "arrivalTime": "07:43",
-        "totalDuration": "14 min",
-        "status": "On Time",
-        "live_updated_at": "07:28:53",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "07:29",
-                "arrival": "07:43",
-                "departurePlatform": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
-        "type": "Direct",
         "departureTime": "08:25",
         "arrivalTime": "08:43",
         "totalDuration": "18 min",
         "status": "On Time",
-        "live_updated_at": "07:28:53",
+        "live_updated_at": "07:43:27",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -40,19 +20,39 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "Direct",
         "departureTime": "09:23",
         "arrivalTime": "09:43",
         "totalDuration": "20 min",
         "status": "On Time",
-        "live_updated_at": "07:28:53",
+        "live_updated_at": "07:43:27",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Imperial Wharf",
                 "departure": "09:23",
                 "arrival": "09:43",
+                "departurePlatform": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "Direct",
+        "departureTime": "10:25",
+        "arrivalTime": "10:44",
+        "totalDuration": "19 min",
+        "status": "On Time",
+        "live_updated_at": "07:43:27",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Imperial Wharf",
+                "departure": "10:25",
+                "arrival": "10:44",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
