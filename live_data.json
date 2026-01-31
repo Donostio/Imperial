@@ -1,20 +1,34 @@
 [
     {
         "id": 1,
-        "type": "Direct",
-        "departureTime": "06:25",
-        "arrivalTime": "06:44",
-        "totalDuration": "19 min",
+        "type": "One Change",
+        "departureTime": "06:19",
+        "arrivalTime": "06:53",
+        "totalDuration": "34 min",
         "status": "On Time",
-        "live_updated_at": "03:07:35",
+        "live_updated_at": "03:53:59",
         "legs": [
             {
                 "origin": "Streatham Common",
-                "destination": "Imperial Wharf",
-                "departure": "06:25",
-                "arrival": "06:44",
-                "departurePlatform": "TBC",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "06:19",
+                "arrival": "06:31",
+                "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "18 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "06:49",
+                "arrival": "06:53",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
                 "status": "On Time"
             }
         ]
@@ -26,7 +40,7 @@
         "arrivalTime": "07:08",
         "totalDuration": "25 min",
         "status": "On Time",
-        "live_updated_at": "03:07:35",
+        "live_updated_at": "03:53:59",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -60,7 +74,7 @@
         "arrivalTime": "07:23",
         "totalDuration": "34 min",
         "status": "On Time",
-        "live_updated_at": "03:07:35",
+        "live_updated_at": "03:53:59",
         "legs": [
             {
                 "origin": "Streatham Common",
