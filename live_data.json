@@ -1,52 +1,18 @@
 [
     {
         "id": 1,
-        "type": "One Change",
-        "departureTime": "07:11",
-        "arrivalTime": "07:39",
-        "totalDuration": "28 min",
-        "status": "On Time",
-        "live_updated_at": "07:12:01",
-        "legs": [
-            {
-                "origin": "Streatham Common",
-                "destination": "Clapham Junction Rail Station",
-                "departure": "07:11",
-                "arrival": "07:20",
-                "arrivalPlatform_ClaphamJunction": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            },
-            {
-                "type": "transfer",
-                "location": "Clapham Junction Rail Station",
-                "transferTime": "15 min"
-            },
-            {
-                "origin": "Clapham Junction Rail Station",
-                "destination": "Imperial Wharf",
-                "departure": "07:35",
-                "arrival": "07:39",
-                "departurePlatform_ClaphamJunction": "TBC",
-                "operator": "Mildmay",
-                "status": "On Time"
-            }
-        ]
-    },
-    {
-        "id": 2,
         "type": "Direct",
-        "departureTime": "07:25",
-        "arrivalTime": "07:43",
-        "totalDuration": "18 min",
+        "departureTime": "07:38",
+        "arrivalTime": "07:51",
+        "totalDuration": "13 min",
         "status": "On Time",
-        "live_updated_at": "07:12:01",
+        "live_updated_at": "07:33:13",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Imperial Wharf",
-                "departure": "07:25",
-                "arrival": "07:43",
+                "departure": "07:38",
+                "arrival": "07:51",
                 "departurePlatform": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -54,18 +20,18 @@
         ]
     },
     {
-        "id": 3,
+        "id": 2,
         "type": "One Change",
-        "departureTime": "07:39",
+        "departureTime": "07:40",
         "arrivalTime": "08:01",
-        "totalDuration": "22 min",
+        "totalDuration": "21 min",
         "status": "On Time",
-        "live_updated_at": "07:12:01",
+        "live_updated_at": "07:33:13",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "07:39",
+                "departure": "07:40",
                 "arrival": "07:50",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
@@ -81,6 +47,40 @@
                 "destination": "Imperial Wharf",
                 "departure": "07:57",
                 "arrival": "08:01",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "One Change",
+        "departureTime": "07:49",
+        "arrivalTime": "08:15",
+        "totalDuration": "26 min",
+        "status": "On Time",
+        "live_updated_at": "07:33:13",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "07:49",
+                "arrival": "08:02",
+                "arrivalPlatform_ClaphamJunction": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "9 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "08:11",
+                "arrival": "08:15",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
