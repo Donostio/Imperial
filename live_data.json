@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "20:14",
+        "departureTime": "20:16",
         "arrivalTime": "20:38",
-        "totalDuration": "24 min",
+        "totalDuration": "22 min",
         "status": "On Time",
-        "live_updated_at": "20:00:21",
+        "live_updated_at": "20:14:18",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "20:14",
-                "arrival": "20:23",
+                "departure": "20:16",
+                "arrival": "20:25",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -20,7 +20,7 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "11 min"
+                "transferTime": "9 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
@@ -40,7 +40,7 @@
         "arrivalTime": "20:42",
         "totalDuration": "17 min",
         "status": "On Time",
-        "live_updated_at": "20:00:21",
+        "live_updated_at": "20:14:18",
         "legs": [
             {
                 "origin": "Streatham Common",
