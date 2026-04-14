@@ -6,7 +6,7 @@
         "arrivalTime": "14:45",
         "totalDuration": "20 min",
         "status": "On Time",
-        "live_updated_at": "12:33:00",
+        "live_updated_at": "12:59:58",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -26,7 +26,7 @@
         "arrivalTime": "15:43",
         "totalDuration": "18 min",
         "status": "On Time",
-        "live_updated_at": "12:33:00",
+        "live_updated_at": "12:59:58",
         "legs": [
             {
                 "origin": "Streatham Common",
@@ -41,34 +41,20 @@
     },
     {
         "id": 3,
-        "type": "One Change",
-        "departureTime": "16:10",
-        "arrivalTime": "16:37",
-        "totalDuration": "27 min",
+        "type": "Direct",
+        "departureTime": "16:25",
+        "arrivalTime": "16:42",
+        "totalDuration": "17 min",
         "status": "On Time",
-        "live_updated_at": "12:33:00",
+        "live_updated_at": "12:59:58",
         "legs": [
             {
                 "origin": "Streatham Common",
-                "destination": "Clapham Junction Rail Station",
-                "departure": "16:10",
-                "arrival": "16:20",
-                "arrivalPlatform_ClaphamJunction": "TBC",
-                "operator": "Southern",
-                "status": "On Time"
-            },
-            {
-                "type": "transfer",
-                "location": "Clapham Junction Rail Station",
-                "transferTime": "13 min"
-            },
-            {
-                "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "16:33",
-                "arrival": "16:37",
-                "departurePlatform_ClaphamJunction": "TBC",
-                "operator": "Mildmay",
+                "departure": "16:25",
+                "arrival": "16:42",
+                "departurePlatform": "TBC",
+                "operator": "Southern",
                 "status": "On Time"
             }
         ]
