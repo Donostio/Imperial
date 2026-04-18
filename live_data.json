@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "06:59",
-        "arrivalTime": "08:32",
+        "departureTime": "07:44",
+        "arrivalTime": "09:17",
         "totalDuration": "93 min",
         "status": "On Time",
-        "live_updated_at": "04:26:13",
+        "live_updated_at": "05:14:31",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "West Hampstead Thameslink Rail Station",
-                "departure": "07:18",
-                "arrival": "07:58",
+                "departure": "08:03",
+                "arrival": "08:43",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Thameslink",
                 "status": "On Time"
@@ -20,13 +20,13 @@
             {
                 "type": "transfer",
                 "location": "West Hampstead Thameslink Rail Station",
-                "transferTime": "10 min"
+                "transferTime": "11 min"
             },
             {
                 "origin": "West Hampstead Thameslink Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "08:08",
-                "arrival": "08:32",
+                "departure": "08:54",
+                "arrival": "09:17",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
