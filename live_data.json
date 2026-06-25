@@ -2,17 +2,17 @@
     {
         "id": 1,
         "type": "One Change",
-        "departureTime": "19:54",
-        "arrivalTime": "20:22",
-        "totalDuration": "28 min",
+        "departureTime": "20:20",
+        "arrivalTime": "21:12",
+        "totalDuration": "52 min",
         "status": "On Time",
-        "live_updated_at": "18:36:53",
+        "live_updated_at": "19:20:08",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "19:54",
-                "arrival": "20:03",
+                "departure": "20:20",
+                "arrival": "20:31",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -20,13 +20,13 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "15 min"
+                "transferTime": "36 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "20:18",
-                "arrival": "20:22",
+                "departure": "21:07",
+                "arrival": "21:12",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
@@ -36,17 +36,17 @@
     {
         "id": 2,
         "type": "One Change",
-        "departureTime": "20:11",
-        "arrivalTime": "20:38",
-        "totalDuration": "27 min",
+        "departureTime": "20:50",
+        "arrivalTime": "21:26",
+        "totalDuration": "36 min",
         "status": "On Time",
-        "live_updated_at": "18:36:53",
+        "live_updated_at": "19:20:08",
         "legs": [
             {
                 "origin": "Streatham Common",
                 "destination": "Clapham Junction Rail Station",
-                "departure": "20:11",
-                "arrival": "20:21",
+                "departure": "20:50",
+                "arrival": "21:01",
                 "arrivalPlatform_ClaphamJunction": "TBC",
                 "operator": "Southern",
                 "status": "On Time"
@@ -54,13 +54,47 @@
             {
                 "type": "transfer",
                 "location": "Clapham Junction Rail Station",
-                "transferTime": "13 min"
+                "transferTime": "21 min"
             },
             {
                 "origin": "Clapham Junction Rail Station",
                 "destination": "Imperial Wharf",
-                "departure": "20:34",
-                "arrival": "20:38",
+                "departure": "21:22",
+                "arrival": "21:26",
+                "departurePlatform_ClaphamJunction": "TBC",
+                "operator": "Mildmay",
+                "status": "On Time"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "type": "One Change",
+        "departureTime": "21:19",
+        "arrivalTime": "22:09",
+        "totalDuration": "50 min",
+        "status": "On Time",
+        "live_updated_at": "19:20:08",
+        "legs": [
+            {
+                "origin": "Streatham Common",
+                "destination": "Clapham Junction Rail Station",
+                "departure": "21:19",
+                "arrival": "21:31",
+                "arrivalPlatform_ClaphamJunction": "TBC",
+                "operator": "Southern",
+                "status": "On Time"
+            },
+            {
+                "type": "transfer",
+                "location": "Clapham Junction Rail Station",
+                "transferTime": "32 min"
+            },
+            {
+                "origin": "Clapham Junction Rail Station",
+                "destination": "Imperial Wharf",
+                "departure": "22:03",
+                "arrival": "22:09",
                 "departurePlatform_ClaphamJunction": "TBC",
                 "operator": "Mildmay",
                 "status": "On Time"
